@@ -32,7 +32,9 @@ class Paciente(models.Model):
     sexo = models.CharField(max_length=30, choices=(('M', 'Masculino'), ('F', 'Femenino'), ('O', 'Otro')))
     ocupacion = models.CharField(max_length = 50, null=True, blank=True)
     domicilio = models.CharField(max_length = 100, null=True, blank=True)
-    telefono = models.CharField(max_length = 30, null=True, blank=True)
+    telefono = models.CharField(max_length = 50, null=True, blank=True)
+    obra_social = models.CharField(max_length = 30, null=True, blank=True)
+    email = models.EmailField(null=True, blank=True)
 
     def __str__(self):
         return "{} {}".format(self.nombre, self.apellido)
