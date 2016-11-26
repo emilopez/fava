@@ -1,9 +1,34 @@
-<div>
-    <h1><a href="/">Fava</a></h1>
-</div>
-
-{% for paciente in pacientes %}
-    <div>
-        <a href="">{{ paciente.apellido }}</a>
+{% extends 'hc/base.html' %}
+{% block content %}
+<div class="row">
+    <div class="col-lg-6">
+        <h2>Listado de Pacientes</h2>
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Apellido</th>
+                        <th>Nombre</th>
+                        <th>Obra Social</th>
+                        <th>Edad</th>
+                        <th>Email</th>
+                        <th>Teléfono</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for paciente in pacientes %}
+                        <tr>
+                            <td>{{ paciente.apellido }}</td>
+                            <td>{{ paciente.nombre }}</td>
+                            <td>{{ paciente.obra_social }}</td>
+                            <td>{{ paciente.fecha_nacimiento }}</td>
+                            <td>{{ paciente.email }}</td>
+                            <td>{{ paciente.telefono }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
-{% endfor %}
+</div>
+{% endblock %}
