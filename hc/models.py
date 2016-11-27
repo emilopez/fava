@@ -1,8 +1,9 @@
 from django.db import models
 from django.utils import timezone
+from django.contrib.auth.models import User
 
 class Profesional(models.Model):
-    user = models.OneToOneField('auth.User', related_name='profesional')
+    user = models.OneToOneField(User, related_name='profesional')
     apellido = models.CharField(max_length=30)
     nombre = models.CharField(max_length=30)
     matricula = models.CharField(max_length=30)
@@ -13,7 +14,7 @@ class Profesional(models.Model):
         return "{} {} (MP {})".format(self.nombre, self.apellido, self.matricula)
 
 class Paciente(models.Model):
-    medico = models.ForeignKey('hc.Profesional', related_name='medico')
+    medico = models.ForeignKey('auth.User')
     NACIONALIDAD_CHOICES=(
         ('Argentina', 'Argentino'),
         ('Boliviana', 'Boliviano'),

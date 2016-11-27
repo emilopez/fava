@@ -1,7 +1,9 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required
 from .models import Paciente, Profesional
+from .forms import PacienteForm
 
-# Create your views here.
+
 def pacientes(request):
     pacientes = Paciente.objects.order_by('apellido')
     #Question.objects.order_by('-pub_date')[:5]
@@ -10,3 +12,15 @@ def pacientes(request):
 def paciente_detalle(request, pk):
     paciente = get_object_or_404(Paciente, pk=pk)
     return render(request, 'hc/paciente.html', {'paciente': paciente})
+
+def paciente_nuevo(request):
+    if request.method == "POST":
+        form = PacienteForm(request.POST)
+        if form.is_valid():
+            paciente = form.save(commit=False)
+            paciente.medico = request.user
+            paciente.save()
+            return redirect('paciente_detalle', pk=paciente.pk)
+    else:
+        form = PacienteForm()
+    return render(request, 'hc/paciente_editar.html', {'form': form})
