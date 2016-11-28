@@ -6,7 +6,6 @@ from .forms import PacienteForm
 @login_required
 def pacientes(request):
     pacientes = Paciente.objects.order_by('apellido')
-    #Question.objects.order_by('-pub_date')[:5]
     return render(request, 'hc/pacientes.html', {'pacientes': pacientes})
 
 @login_required
