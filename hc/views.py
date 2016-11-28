@@ -26,3 +26,17 @@ def paciente_nuevo(request):
     else:
         form = PacienteForm()
     return render(request, 'hc/paciente_editar.html', {'form': form})
+
+@login_required
+def paciente_editar(request, pk):
+    paciente = get_object_or_404(Paciente, pk=pk)
+    if request.method == "POST":
+        form = PacienteForm(request.POST, instance=paciente)
+        if form.is_valid():
+            paciente = form.save(commit=False)
+            paciente.medico = request.user
+            paciente.save()
+            return redirect('paciente_detalle', pk=paciente.pk)
+    else:
+        form = PacienteForm(instance=paciente)
+    return render(request, 'hc/paciente_editar.html', {'form': form})
