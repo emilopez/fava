@@ -3,16 +3,18 @@ from django.contrib.auth.decorators import login_required
 from .models import Paciente, Profesional
 from .forms import PacienteForm
 
-
+@login_required
 def pacientes(request):
     pacientes = Paciente.objects.order_by('apellido')
     #Question.objects.order_by('-pub_date')[:5]
     return render(request, 'hc/pacientes.html', {'pacientes': pacientes})
 
+@login_required
 def paciente_detalle(request, pk):
     paciente = get_object_or_404(Paciente, pk=pk)
     return render(request, 'hc/paciente.html', {'paciente': paciente})
 
+@login_required
 def paciente_nuevo(request):
     if request.method == "POST":
         form = PacienteForm(request.POST)
