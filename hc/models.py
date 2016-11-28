@@ -46,6 +46,9 @@ class Consulta(models.Model):
     fecha = models.DateTimeField(auto_now=True)   # Almacena la fecha actual
     entrada = models.TextField(blank=True, null=True)
 
+    class Meta:
+        ordering = ["-fecha"]
+
 class Adjunto(models.Model):
     consulta = models.ForeignKey("hc.Consulta")
     archivo = models.FileField(blank=True, null=True, upload_to="Consulta")

@@ -45,3 +45,7 @@ def paciente_eliminar(request, pk):
     paciente = get_object_or_404(Paciente, pk=pk)
     paciente.delete()
     return redirect('pacientes')
+
+@login_required
+def paciente_consultas(request, pk):
+    pass
