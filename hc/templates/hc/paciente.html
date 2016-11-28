@@ -9,8 +9,12 @@
 </div>
 <div class="row">
         <div class="panel panel-info">
-            <div class="panel-heading"><h3 class="panel-title">
-                <i class="fa fa-fw fa-user"></i>{{ paciente.apellido }}, {{ paciente.nombre }} <a class="btn btn-default" href="{% url 'paciente_editar' pk=paciente.pk %}"><span class="glyphicon glyphicon-pencil"></span></a></h3>
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <i class="fa fa-fw fa-user"></i>{{ paciente.apellido }}, {{ paciente.nombre }}
+                    <a class="btn btn-default" href="{% url 'paciente_editar' pk=paciente.pk %}"><i class="glyphicon glyphicon-pencil"></i></a>
+                    <a class="btn btn-default" href="{% url 'paciente_eliminar' pk=paciente.pk %}"><i class="glyphicon glyphicon-remove"></i></a>
+                </h3>
             </div>
                     <div class="panel panel-default">
                         <!-- /.panel-heading -->

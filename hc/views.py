@@ -40,3 +40,9 @@ def paciente_editar(request, pk):
     else:
         form = PacienteForm(instance=paciente)
     return render(request, 'hc/paciente_editar.html', {'form': form})
+
+@login_required
+def paciente_eliminar(request, pk):
+    paciente = get_object_or_404(Paciente, pk=pk)
+    paciente.delete()
+    return redirect('pacientes')
