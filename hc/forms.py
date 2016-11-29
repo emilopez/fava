@@ -1,6 +1,7 @@
 from django import forms
-from .models import Paciente, Profesional
+from .models import Paciente, Profesional, Consulta
 from django.contrib.auth.models import User
+from django.utils.translation import ugettext_lazy as _
 
 class PacienteForm(forms.ModelForm):
     class Meta:
@@ -20,8 +21,21 @@ class PacienteForm(forms.ModelForm):
             'obra_social': forms.TextInput(attrs={'class': 'form-control'}),
             'email': forms.TextInput(attrs={'class': 'form-control'}),
         }
+
 class ProfesionalForm(forms.ModelForm):
 
     class Meta:
         model = User
         fields = ('username', 'password', 'email', 'last_name', 'first_name',  )
+
+class ConsultaForm(forms.ModelForm):
+
+    class Meta:
+        model = Consulta
+        fields = ('entrada',)
+        labels = {
+            'entrada': _(''),
+        }
+        widgets = {
+            'entrada': forms.Textarea(attrs={'class': 'form-control', 'rows':'3'}),
+        }

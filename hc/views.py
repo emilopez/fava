@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from .models import Paciente, Profesional
-from .forms import PacienteForm
+from .forms import PacienteForm, ConsultaForm
 
 @login_required
 def pacientes(request):
@@ -11,7 +11,15 @@ def pacientes(request):
 @login_required
 def paciente_detalle(request, pk):
     paciente = get_object_or_404(Paciente, pk=pk)
-    return render(request, 'hc/paciente.html', {'paciente': paciente})
+    if request.method == "POST":
+        form = ConsultaForm(request.POST)
+        if form.is_valid():
+            consulta = form.save(commit=False)
+            consulta.paciente = paciente
+            consulta.save()
+    else:
+        form = ConsultaForm()
+    return render(request, 'hc/paciente.html', {'paciente': paciente, 'form': form})
 
 @login_required
 def paciente_nuevo(request):
@@ -45,7 +53,3 @@ def paciente_eliminar(request, pk):
     paciente = get_object_or_404(Paciente, pk=pk)
     paciente.delete()
     return redirect('pacientes')
-
-@login_required
-def paciente_consultas(request, pk):
-    pass
