@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
+import os
 
 class Profesional(models.Model):
     user = models.OneToOneField(User, related_name='profesional')
@@ -52,3 +53,5 @@ class Consulta(models.Model):
 class Adjunto(models.Model):
     consulta = models.ForeignKey("hc.Consulta", related_name='adjuntos')
     archivo = models.FileField(blank=True, null=True, upload_to="consultas/%Y/%m/%d/")
+    def filename(self):
+        return os.path.basename(self.archivo.name)
