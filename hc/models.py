@@ -50,5 +50,5 @@ class Consulta(models.Model):
         ordering = ["-fecha"]
 
 class Adjunto(models.Model):
-    consulta = models.ForeignKey("hc.Consulta")
-    archivo = models.FileField(blank=True, null=True, upload_to="Consulta")
+    consulta = models.ForeignKey("hc.Consulta", related_name='adjuntos')
+    archivo = models.FileField(blank=True, null=True, upload_to="consultas/%Y/%m/%d/")

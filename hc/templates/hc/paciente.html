@@ -68,6 +68,11 @@
                                                     <div class="panel-body">
                                                         {{consulta.entrada}}
                                                     </div>
+                                                    <div class="panel-body">
+                                                        {% for adjunto in consulta.adjuntos.all %}
+                                                            <a href="{{ adjunto.archivo.url }}"><i class="glyphicon glyphicon-file"></i> {{adjunto.archivo.name}}</a>
+                                                        {% endfor %}
+                                                    </div>
                                                 </div>
                                             </div>
                                         {% empty %}
