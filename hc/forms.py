@@ -6,7 +6,10 @@ from django.utils.translation import ugettext_lazy as _
 class PacienteForm(forms.ModelForm):
     class Meta:
         model = Paciente
-        fields = ('apellido', 'nombre','documento','fecha_nacimiento', 'nacionalidad', 'estado_civil', 'sexo', 'ocupacion','domicilio','telefono','obra_social','email',)
+        fields = ('apellido', 'nombre','obra_social','codigo_obra_social', 'documento','fecha_nacimiento', 'nacionalidad', 'estado_civil', 'sexo', 'ocupacion','domicilio','telefono','email',)
+        labels = {
+            'codigo_obra_social': _('Código obra social'),
+        }
         widgets = {
             'apellido': forms.TextInput(attrs={'class': 'form-control'}),
             'nombre': forms.TextInput(attrs={'class': 'form-control'}),
@@ -19,6 +22,7 @@ class PacienteForm(forms.ModelForm):
             'domicilio': forms.TextInput(attrs={'class': 'form-control'}),
             'telefono': forms.TextInput(attrs={'class': 'form-control'}),
             'obra_social': forms.TextInput(attrs={'class': 'form-control'}),
+            'codigo_obra_social': forms.TextInput(attrs={'class': 'form-control', 'label':'Código obra social'}),
             'email': forms.TextInput(attrs={'class': 'form-control'}),
         }
 

@@ -48,7 +48,7 @@
                                         {% for paciente in pacientes %}
                                             <tr class="gradeA odd" role="row">
                                                 <td><a href="{% url 'paciente_detalle' pk=paciente.pk %}">{{ paciente.apellido }}, {{ paciente.nombre }}</a></td>
-                                                <td>{{ paciente.obra_social }}</td>
+                                                <td>{{ paciente.codigo_obra_social }} - {{ paciente.obra_social }}</td>
                                                 <td>{{ paciente.fecha_nacimiento }}</td>
                                                 <td>{{ paciente.email }}</td>
                                                 <td>{{ paciente.telefono }}</td>

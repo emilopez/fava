@@ -28,6 +28,8 @@ class Paciente(models.Model):
         ('Otra','Otro'), )
     apellido = models.CharField(max_length=30)
     nombre = models.CharField(max_length=30)
+    obra_social = models.CharField(max_length = 30, null=True, blank=True)
+    codigo_obra_social = models.CharField(max_length = 30, null=True, blank=True)
     documento = models.CharField(max_length=15, null=True, blank=True)
     fecha_nacimiento = models.DateField(null=True, blank=True)
     nacionalidad = models.CharField(max_length= 25, choices=NACIONALIDAD_CHOICES, default=('Argentina', 'Argentino'))
@@ -36,7 +38,6 @@ class Paciente(models.Model):
     ocupacion = models.CharField(max_length = 50, null=True, blank=True)
     domicilio = models.CharField(max_length = 100, null=True, blank=True)
     telefono = models.CharField(max_length = 50, null=True, blank=True)
-    obra_social = models.CharField(max_length = 30, null=True, blank=True)
     email = models.EmailField(null=True, blank=True)
 
     def __str__(self):
