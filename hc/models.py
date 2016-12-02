@@ -39,7 +39,8 @@ class Paciente(models.Model):
     domicilio = models.CharField(max_length = 100, null=True, blank=True)
     telefono = models.CharField(max_length = 50, null=True, blank=True)
     email = models.EmailField(null=True, blank=True)
-
+    antecedentes_personales = models.TextField(blank=True, null=True)
+    antecedentes_heredofamiliares = models.TextField(blank=True, null=True)
     def __str__(self):
         return "{} {}".format(self.nombre, self.apellido)
 

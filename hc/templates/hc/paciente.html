@@ -3,7 +3,11 @@
 
 <div class="row">
     <div class="col-lg-12">
-        <h1 class="page-header">Datos del paciente</h1>
+        <h1 class="page-header">
+            <i class="fa fa-fw fa-user"></i> {{ paciente.apellido }}, {{ paciente.nombre }}
+            <a class="btn btn-default" href="{% url 'paciente_editar' pk=paciente.pk %}"><i class="glyphicon glyphicon-pencil"></i></a>
+            <a class="btn btn-default" href="{% url 'paciente_eliminar' pk=paciente.pk %}"><i class="glyphicon glyphicon-remove"></i></a>
+        </h1>
     </div>
     <!-- /.col-lg-12 -->
 </div>
@@ -12,82 +16,105 @@
         <div class="panel panel-info">
             <div class="panel-heading">
                 <h3 class="panel-title">
-                    <i class="fa fa-fw fa-user"></i> {{ paciente.apellido }}, {{ paciente.nombre }}
-                    <a class="btn btn-default" href="{% url 'paciente_editar' pk=paciente.pk %}"><i class="glyphicon glyphicon-pencil"></i></a>
-                    <a class="btn btn-default" href="{% url 'paciente_eliminar' pk=paciente.pk %}"><i class="glyphicon glyphicon-remove"></i></a>
+                    Datos de filiación
                 </h3>
             </div>
-                    <div class="panel panel-default">
-                        <!-- /.panel-heading -->
-                        <div class="panel-body">
-                            <div class="table-responsive">
-                                <table class="table table-striped">
-                                    <tbody>
-                                        <tr><td>Obra social</td><td>{{ paciente.codigo_obra_social }} - {{ paciente.obra_social }}</td></tr>
-                                        <tr><td>Documento</td><td>{{ paciente.documento }}</td></tr>
-                                        <tr><td>Fecha de nacimiento</td><td>{{ paciente.fecha_nacimiento }}</td></tr>
-                                        <tr><td>Nacionalidad</td><td>{{ paciente.nacionalidad }}</td></tr>
-                                        <tr><td>Estado civil</td><td>{{ paciente.estado_civil }}</td></tr>
-                                        <tr><td>Género</td><td>{{ paciente.sexo }}</td></tr>
-                                        <tr><td>Ocupación</td><td>{{ paciente.ocupacion }}</td></tr>
-                                        <tr><td>Domicilio</td><td>{{ paciente.domicilio }}</td></tr>
-                                        <tr><td>Teléfono</td><td> {{ paciente.telefono }}</td></tr>
-                                        <tr><td>E-mail</td><td>{{ paciente.email }}</td></tr>
-                                    </tbody>
-                                </table>
+            <div class="panel panel-default">
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <tbody>
+                                <tr><td>Obra social</td><td>{{ paciente.codigo_obra_social }} - {{ paciente.obra_social }}</td></tr>
+                                <tr><td>Documento</td><td>{{ paciente.documento }}</td></tr>
+                                <tr><td>Fecha de nacimiento</td><td>{{ paciente.fecha_nacimiento }}</td></tr>
+                                <tr><td>Nacionalidad</td><td>{{ paciente.nacionalidad }}</td></tr>
+                                <tr><td>Estado civil</td><td>{{ paciente.estado_civil }}</td></tr>
+                                <tr><td>Género</td><td>{{ paciente.sexo }}</td></tr>
+                                <tr><td>Ocupación</td><td>{{ paciente.ocupacion }}</td></tr>
+                                <tr><td>Domicilio</td><td>{{ paciente.domicilio }}</td></tr>
+                                <tr><td>Teléfono</td><td> {{ paciente.telefono }}</td></tr>
+                                <tr><td>E-mail</td><td>{{ paciente.email }}</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.table-responsive -->
+
+                </div>
+                <!-- /.panel-body -->
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                Antecedentes personales
+            </div>
+            <div class="panel-body">
+                <p>{{ paciente.antecedentes_personales }}</p>
+            </div>
+        </div>
+
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                Antecedentes heredofamiliares
+            </div>
+            <div class="panel-body">
+                <p>{{ paciente.antecedentes_heredofamiliares }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-info">
+            <div class="panel-heading"> <h3 class="panel-title"><i class="glyphicon glyphicon-th-list"></i> Consultas</h3> </div>
+            <!-- .panel-heading -->
+            <div class="panel-body">
+                <div class="panel-group" id="accordion">
+                        <div class="panel panel-danger">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse0"><i class="glyphicon glyphicon-plus"></i> Nueva consulta</a>
+                                </h4>
                             </div>
-                            <!-- /.table-responsive -->
-                            <div class="panel panel-info">
-                                <div class="panel-heading"> <h3 class="panel-title"><i class="glyphicon glyphicon-th-list"></i> Consultas</h3> </div>
-                                <!-- .panel-heading -->
+                            <div id="collapse0" class="panel-collapse collapse">
                                 <div class="panel-body">
-                                    <div class="panel-group" id="accordion">
-                                            <div class="panel panel-danger">
-                                                <div class="panel-heading">
-                                                    <h4 class="panel-title">
-                                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse0"><i class="glyphicon glyphicon-plus"></i> Nueva consulta</a>
-                                                    </h4>
-                                                </div>
-                                                <div id="collapse0" class="panel-collapse collapse">
-                                                    <div class="panel-body">
-                                                        <form method="POST" class="post-form">{% csrf_token %}
-                                                            {{ form.as_p }}
-                                                            <button type="submit"class="btn btn-default">Guardar</button>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        {% for consulta in paciente.consultas.all %}
-                                            <div class="panel panel-default">
-                                                <div class="panel-heading">
-                                                    <h4 class="panel-title">
-                                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{ forloop.counter }}"><i class="glyphicon glyphicon-expand"></i> {{consulta.fecha}}</a>
-                                                    </h4>
-                                                </div>
-                                                <div id="collapse{{ forloop.counter }}" class="panel-collapse collapse">
-                                                    <div class="panel-body">
-                                                        {{consulta.entrada}}
-                                                    </div>
-                                                    <div class="panel-body">
-                                                        <ul class="list-inline">
-                                                            {% for adjunto in consulta.adjuntos.all %}
-                                                                <li><a href="{{ adjunto.archivo.url }}"><i class="glyphicon glyphicon-file"></i> {{adjunto.filename}}</a></li>
-                                                            {% endfor %}
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        {% empty %}
-                                            <p>No hay consultas :(</p>
-                                        {% endfor %}
-                                    </div>
+                                    <form method="POST" class="post-form">{% csrf_token %}
+                                        {{ form.as_p }}
+                                        <button type="submit"class="btn btn-default">Guardar</button>
+                                    </form>
                                 </div>
-                                <!-- .panel-body -->
                             </div>
                         </div>
-                        <!-- /.panel-body -->
-                    </div>
+                    {% for consulta in paciente.consultas.all %}
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{ forloop.counter }}"><i class="glyphicon glyphicon-expand"></i> {{consulta.fecha}}</a>
+                                </h4>
+                            </div>
+                            <div id="collapse{{ forloop.counter }}" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    {{consulta.entrada}}
+                                </div>
+                                <div class="panel-body">
+                                    <ul class="list-inline">
+                                        {% for adjunto in consulta.adjuntos.all %}
+                                            <li><a href="{{ adjunto.archivo.url }}"><i class="glyphicon glyphicon-file"></i> {{adjunto.filename}}</a></li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <p>No hay consultas :(</p>
+                    {% endfor %}
                 </div>
+            </div>
+            <!-- .panel-body -->
         </div>
+    </div>
 </div>
 {% endblock %}
