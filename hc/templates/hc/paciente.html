@@ -47,21 +47,12 @@
     </div>
     <div class="col-lg-6">
         <div class="panel panel-info">
-            <div class="panel-heading">
-                Antecedentes personales
-            </div>
-            <div class="panel-body">
-                <p>{{ paciente.antecedentes_personales }}</p>
-            </div>
-        </div>
-
-        <div class="panel panel-info">
-            <div class="panel-heading">
-                Antecedentes heredofamiliares
-            </div>
-            <div class="panel-body">
-                <p>{{ paciente.antecedentes_heredofamiliares }}</p>
-            </div>
+            {% for historico in paciente.historico_set.all %}
+                    {% ifchanged %} <div class="panel-heading"> {{historico.antecedente.tipo}} </div> {% endifchanged %}
+                    <div class="panel-body">
+                    {{historico.antecedente.texto}}: {{historico.texto}}
+                    </div>
+            {% endfor %}
         </div>
     </div>
 </div>
@@ -73,21 +64,6 @@
             <!-- .panel-heading -->
             <div class="panel-body">
                 <div class="panel-group" id="accordion">
-                        <div class="panel panel-danger">
-                            <div class="panel-heading">
-                                <h4 class="panel-title">
-                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse0"><i class="glyphicon glyphicon-plus"></i> Nueva consulta</a>
-                                </h4>
-                            </div>
-                            <div id="collapse0" class="panel-collapse collapse">
-                                <div class="panel-body">
-                                    <form method="POST" class="post-form">{% csrf_token %}
-                                        {{ form.as_p }}
-                                        <button type="submit"class="btn btn-default">Guardar</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
                     {% for consulta in paciente.consultas.all %}
                         <div class="panel panel-default">
                             <div class="panel-heading">

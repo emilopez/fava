@@ -32,19 +32,13 @@ class Paciente(models.Model):
     telefono = models.CharField(max_length = 50, null=True, blank=True)
     email = models.EmailField(null=True, blank=True)
 
+
     def __str__(self):
         return "{} {}".format(self.nombre, self.apellido)
 
-class HistoriaClinica(models.Model):
-    paciente = models.ForeignKey('hc.Paciente', related_name='historia_clinica')
-    antecedentes = models.ManyToManyField('hc.Antecedente', through = 'hc.HcAntDetalle')
-
-    def __str__(self):
-        return "{} {}".format(self.paciente.nombre, self.paciente.apellido)
-
 
 class Consulta(models.Model):
-    historia_clinica = models.ForeignKey('hc.HistoriaClinica', related_name='consultas')
+    paciente = models.ForeignKey('hc.Paciente', related_name='consultas',null=True, blank=True)
     fecha = models.DateTimeField(auto_now=True)   # Almacena la fecha actual
     entrada = models.TextField(blank=True, null=True)
 
@@ -52,7 +46,7 @@ class Consulta(models.Model):
         ordering = ["-fecha"]
 
     def __str__(self):
-        return "{} {}".format(self.historia_clinica.paciente,self.fecha)
+        return "{} {}".format(self.paciente, self.fecha)
 
 class Adjunto(models.Model):
     consulta = models.ForeignKey("hc.Consulta", related_name='adjuntos')
@@ -64,16 +58,21 @@ class TipoAntecedente(models.Model):
     texto = models.TextField(blank=True, null=True)
 
     def __str__(self):
-        return self.texto
+        return "{}".format(self.texto)
 
 class Antecedente(models.Model):
     tipo = models.ForeignKey("hc.TipoAntecedente", related_name='antecedentes')
     texto = models.TextField(blank=True, null=True)
+    registros = models.ManyToManyField('hc.Paciente', through = 'hc.Historico')
 
     def __str__(self):
-        return self.texto
+        return "{}-{}".format(self.tipo, self.texto)
 
-class HcAntDetalle(models.Model):
-    historia_clinica = models.ForeignKey('hc.HistoriaClinica')
+class Historico(models.Model):
+    paciente = models.ForeignKey('hc.Paciente')
     antecedente = models.ForeignKey('hc.Antecedente')
     texto = models.TextField(blank=True, null=True)
+    fecha = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return "{}-{}".format(self.paciente, self.antecedente)
