@@ -16,16 +16,8 @@ class Profesional(models.Model):
 
 class Paciente(models.Model):
     medico = models.ForeignKey('auth.User')
-    NACIONALIDAD_CHOICES=(
-        ('Argentina', 'Argentino'),
-        ('Boliviana', 'Boliviano'),
-        ('Brasilera', 'Brasilero'),
-        ('Colombiana', 'Colombiano'),
-        ('Chilena', 'Chileno'),
-        ('Paraguaya', 'Paraguayo'),
-        ('Peruana', 'Peruano'),
-        ('Uruguaya', 'Uruguayo'),
-        ('Otra','Otro'), )
+    NACIONALIDAD_CHOICES=(('Argentina', 'Argentino'), ('Boliviana', 'Boliviano'),  ('Brasilera', 'Brasilero'), ('Colombiana', 'Colombiano'),
+        ('Chilena', 'Chileno'), ('Paraguaya', 'Paraguayo'), ('Peruana', 'Peruano'), ('Uruguaya', 'Uruguayo'), ('Otra','Otro'),)
     apellido = models.CharField(max_length=30)
     nombre = models.CharField(max_length=30)
     obra_social = models.CharField(max_length = 30, null=True, blank=True)
@@ -33,27 +25,55 @@ class Paciente(models.Model):
     documento = models.CharField(max_length=15, null=True, blank=True)
     fecha_nacimiento = models.DateField(null=True, blank=True)
     nacionalidad = models.CharField(max_length= 25, choices=NACIONALIDAD_CHOICES, default=('Argentina', 'Argentino'))
-    estado_civil = models.CharField(max_length=30, choices=(('C', 'Casado/a'), ('S', 'Soltero/a')))
-    sexo = models.CharField(max_length=30, choices=(('M', 'Masculino'), ('F', 'Femenino'), ('O', 'Otro')))
+    estado_civil = models.CharField(max_length=30, null=True, blank=True, choices=(('C', 'Casado/a'), ('S', 'Soltero/a')))
+    sexo = models.CharField(max_length=30, null=True, blank=True, choices=(('M', 'Masculino'), ('F', 'Femenino'), ('O', 'Otro')))
     ocupacion = models.CharField(max_length = 50, null=True, blank=True)
     domicilio = models.CharField(max_length = 100, null=True, blank=True)
     telefono = models.CharField(max_length = 50, null=True, blank=True)
     email = models.EmailField(null=True, blank=True)
-    antecedentes_personales = models.TextField(blank=True, null=True)
-    antecedentes_heredofamiliares = models.TextField(blank=True, null=True)
+
     def __str__(self):
         return "{} {}".format(self.nombre, self.apellido)
 
+class HistoriaClinica(models.Model):
+    paciente = models.ForeignKey('hc.Paciente', related_name='historia_clinica')
+    antecedentes = models.ManyToManyField('hc.Antecedente', through = 'hc.HcAntDetalle')
+
+    def __str__(self):
+        return "{} {}".format(self.paciente.nombre, self.paciente.apellido)
+
+
 class Consulta(models.Model):
-    paciente = models.ForeignKey('hc.Paciente', related_name='consultas')
+    historia_clinica = models.ForeignKey('hc.HistoriaClinica', related_name='consultas')
     fecha = models.DateTimeField(auto_now=True)   # Almacena la fecha actual
     entrada = models.TextField(blank=True, null=True)
 
     class Meta:
         ordering = ["-fecha"]
 
+    def __str__(self):
+        return "{} {}".format(self.historia_clinica.paciente,self.fecha)
+
 class Adjunto(models.Model):
     consulta = models.ForeignKey("hc.Consulta", related_name='adjuntos')
     archivo = models.FileField(blank=True, null=True, upload_to="consultas/%Y/%m/%d/")
     def filename(self):
         return os.path.basename(self.archivo.name)
+
+class TipoAntecedente(models.Model):
+    texto = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return self.texto
+
+class Antecedente(models.Model):
+    tipo = models.ForeignKey("hc.TipoAntecedente", related_name='antecedentes')
+    texto = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return self.texto
+
+class HcAntDetalle(models.Model):
+    historia_clinica = models.ForeignKey('hc.HistoriaClinica')
+    antecedente = models.ForeignKey('hc.Antecedente')
+    texto = models.TextField(blank=True, null=True)
