@@ -72,6 +72,7 @@ class Antecedente(models.Model):
         return "{}-{}".format(self.tipo, self.texto)
 
 class Historico(models.Model):
+    """ tabla intermedia totalmente dependiente de paciente-antecedente"""
     paciente = models.ForeignKey('hc.Paciente')
     antecedente = models.ForeignKey('hc.Antecedente')
     texto = models.TextField(blank=True, null=True)

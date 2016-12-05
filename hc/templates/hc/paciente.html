@@ -47,13 +47,16 @@
     </div>
     <div class="col-lg-6">
         <div class="panel panel-info">
+
             {% for historico in paciente.historico_set.all %}
-                    {% ifchanged %} <div class="panel-heading"> {{historico.antecedente.tipo}} </div> {% endifchanged %}
-                    <div class="panel-body">
-                    {{historico.antecedente.texto}}: {{historico.texto}}
-                    </div>
-                    
+                    {% ifchanged historico.antecedente.tipo %}
+                        <div class="panel-heading"> {{historico.antecedente.tipo}} </div>
+                    {% endifchanged %}
+                    <ul>
+                    <li>{{historico.antecedente.texto}}: {{historico.texto}}</li>
+                    </ul>
             {% endfor %}
+
         </div>
     </div>
 </div>
