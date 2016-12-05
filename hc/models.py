@@ -77,5 +77,7 @@ class Historico(models.Model):
     texto = models.TextField(blank=True, null=True)
     fecha = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        ordering = ["antecedente"]
     def __str__(self):
         return "{}-{}".format(self.paciente, self.antecedente)
