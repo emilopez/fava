@@ -48,7 +48,10 @@ class AntecedenteForm(forms.ModelForm):
     class Meta:
         model = Antecedente
         fields = ('tipo', 'texto', )
-
+        labels = {
+            'tipo': _('Clasificación'), # para cambiar la etiqueta
+            'texto': _('Tipo'),
+        }
         widgets = {
             'tipo': forms.Select(attrs={'class': 'form-control'}),
             'texto': forms.TextInput(attrs={'class': 'form-control'}),
@@ -58,6 +61,11 @@ class TipoAntecedenteForm(forms.ModelForm):
     class Meta:
         model = TipoAntecedente
         fields = ('texto', )
+
+        labels = {
+            'texto': _('Clasificación'), # para cambiar la etiqueta
+
+        }
 
         widgets = {
             'texto': forms.TextInput(attrs={'class': 'form-control'}),

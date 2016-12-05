@@ -19,7 +19,7 @@
                                 <table class="table table-striped table-bordered table-hover dataTable no-footer dtr-inline" id="dataTables-example" role="grid" aria-describedby="dataTables-example_info" style="width: 100%;" width="100%">
                                     <thead>
                                         <tr role="row">
-                                            <th class="sorting" style="width: 300px;">Tipos cargados</th>
+                                            <th class="sorting" style="width: 300px;">Clasificaciones</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -41,7 +41,7 @@
     </div>
     <div class="col-lg-6">
         <div class="panel panel-info">
-            <div class="panel-heading">Crear nuevo tipo</div>
+            <div class="panel-heading">Crear nueva clasificación</div>
             <div class="panel-body">
                 <form method="POST" class="post-form">{% csrf_token %}
                     {{ form.as_p }}
