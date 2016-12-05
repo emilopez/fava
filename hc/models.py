@@ -65,6 +65,9 @@ class Antecedente(models.Model):
     texto = models.TextField(blank=True, null=True)
     registros = models.ManyToManyField('hc.Paciente', through = 'hc.Historico')
 
+    class Meta:
+        ordering = ["tipo"]
+
     def __str__(self):
         return "{}-{}".format(self.tipo, self.texto)
 
