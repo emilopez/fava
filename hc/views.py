@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
-from .models import Paciente, Profesional
-from .forms import PacienteForm, ConsultaForm
+from .models import Paciente, Profesional, Antecedente, TipoAntecedente
+from .forms import PacienteForm, ConsultaForm, AntecedenteForm, TipoAntecedenteForm
 
 @login_required
 def pacientes(request):
@@ -53,3 +53,33 @@ def paciente_eliminar(request, pk):
     paciente = get_object_or_404(Paciente, pk=pk)
     paciente.delete()
     return redirect('pacientes')
+
+@login_required
+def antecedentes(request):
+    antecedentes = Antecedente.objects.order_by('tipo')
+    return render(request, 'hc/antecedentes.html', {'antecedentes': antecedentes})
+
+@login_required
+def antecedente_nuevo(request):
+    if request.method == "POST":
+        form = AntecedenteForm(request.POST)
+        if form.is_valid():
+            antecedente = form.save(commit=False)
+            antecedente.save()
+            return redirect('antecedentes')
+    else:
+        form = AntecedenteForm()
+    return render(request, 'hc/antecedente_editar.html', {'form': form})
+
+@login_required
+def tipo_antecedente_listar(request):
+    tipos_antecedente = TipoAntecedente.objects.order_by('texto')
+    if request.method == "POST":
+        form = TipoAntecedenteForm(request.POST)
+        if form.is_valid():
+            tipo = form.save(commit=False)
+            tipo.save()
+            return redirect('tipo_antecedente_listar')
+    else:
+        form = TipoAntecedenteForm()
+    return render(request, 'hc/tipo_antecedente_listar.html', {'tipos_antecedente': tipos_antecedente, 'form':form})

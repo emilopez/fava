@@ -61,6 +61,14 @@
                         </li>
                         <li><a href="{% url 'pacientes' %}"><i class="fa fa-table fa-fw"></i> Pacientes</a></li>
                         <li><a href="{% url 'paciente_nuevo' %}"><i class="fa fa-edit fa-fw"></i> Nuevo Paciente</a></li>
+                        <li>
+                            <a href="#"><i class="fa fa-gears fa-fw"></i> Antecedentes <span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li><a href="{% url 'antecedentes' %}"><i class="fa fa-tag fa-fw"></i> Listado</a></li>
+                                <li><a href="{% url 'antecedente_nuevo' %}"><i class="fa fa-plus-circle fa-fw"></i> Nuevo</a></li>
+                                <li><a href="{% url 'tipo_antecedente_listar' %}"><i class="fa fa-tags fa-fw"></i> Tipos</a></li>
+                            </ul>
+                        </li>
                     </ul>
                 </div>
                 <!-- /.sidebar-collapse -->
