@@ -16,22 +16,19 @@ class Profesional(models.Model):
 
 class Paciente(models.Model):
     medico = models.ForeignKey('auth.User')
-    NACIONALIDAD_CHOICES=(('Argentina', 'Argentino'), ('Boliviana', 'Boliviano'),  ('Brasilera', 'Brasilero'), ('Colombiana', 'Colombiano'),
-        ('Chilena', 'Chileno'), ('Paraguaya', 'Paraguayo'), ('Peruana', 'Peruano'), ('Uruguaya', 'Uruguayo'), ('Otra','Otro'),)
     apellido = models.CharField(max_length=30)
     nombre = models.CharField(max_length=30)
     obra_social = models.CharField(max_length = 30, null=True, blank=True)
     codigo_obra_social = models.CharField(max_length = 30, null=True, blank=True)
     documento = models.CharField(max_length=15, null=True, blank=True)
     fecha_nacimiento = models.DateField(null=True, blank=True)
-    nacionalidad = models.CharField(max_length= 25, choices=NACIONALIDAD_CHOICES, default=('Argentina', 'Argentino'))
+    lugar_nacimiento = models.CharField(max_length= 25, null=True, blank=True)
     estado_civil = models.CharField(max_length=30, null=True, blank=True, choices=(('C', 'Casado/a'), ('S', 'Soltero/a')))
     sexo = models.CharField(max_length=30, null=True, blank=True, choices=(('M', 'Masculino'), ('F', 'Femenino'), ('O', 'Otro')))
     ocupacion = models.CharField(max_length = 50, null=True, blank=True)
     domicilio = models.CharField(max_length = 100, null=True, blank=True)
     telefono = models.CharField(max_length = 50, null=True, blank=True)
     email = models.EmailField(null=True, blank=True)
-
 
     def __str__(self):
         return "{} {}".format(self.nombre, self.apellido)

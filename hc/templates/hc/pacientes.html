@@ -40,7 +40,7 @@
                                             <th class="sorting" style="width: 300px;">Apellido, Nombre</th>
                                             <th class="sorting" style="width: 200px;" >Obra Social</th>
                                             <th class="sorting" style="width: 313px;" >Fecha de Nacimiento</th>
-                                            <th class="sorting" style="width: 251px;" >E-mail</th>
+                                            <th class="sorting" style="width: 251px;" >Documento</th>
                                             <th class="sorting" style="width: 188px;" >Teléfono</th>
                                         </tr>
                                     </thead>
@@ -49,9 +49,9 @@
                                             <tr class="gradeA odd" role="row">
                                                 <td><a href="{% url 'paciente_detalle' pk=paciente.pk %}">{{ paciente.apellido }}, {{ paciente.nombre }}</a></td>
                                                 <td>{{ paciente.codigo_obra_social }} - {{ paciente.obra_social }}</td>
-                                                <td>{{ paciente.fecha_nacimiento }}</td>
-                                                <td>{{ paciente.email }}</td>
-                                                <td>{{ paciente.telefono }}</td>
+                                                <td>{{ paciente.fecha_nacimiento|default:"-" }}</td>
+                                                <td>{{ paciente.documento|default:"-" }}</td>
+                                                <td>{{ paciente.telefono|default:"-" }}</td>
                                             </tr>
                                         {% endfor %}
                                     </tbody>

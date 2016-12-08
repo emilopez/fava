@@ -25,16 +25,16 @@
                     <div class="table-responsive">
                         <table class="table table-striped">
                             <tbody>
-                                <tr><td>Obra social</td><td>{{ paciente.codigo_obra_social }} - {{ paciente.obra_social }}</td></tr>
+                                <tr><td>Obra social</td><td>{{ paciente.codigo_obra_social|default:"" }} - {{ paciente.obra_social|default:"" }}</td></tr>
                                 <tr><td>Documento</td><td>{{ paciente.documento }}</td></tr>
-                                <tr><td>Fecha de nacimiento</td><td>{{ paciente.fecha_nacimiento }}</td></tr>
-                                <tr><td>Nacionalidad</td><td>{{ paciente.nacionalidad }}</td></tr>
-                                <tr><td>Estado civil</td><td>{{ paciente.estado_civil }}</td></tr>
-                                <tr><td>Género</td><td>{{ paciente.sexo }}</td></tr>
-                                <tr><td>Ocupación</td><td>{{ paciente.ocupacion }}</td></tr>
-                                <tr><td>Domicilio</td><td>{{ paciente.domicilio }}</td></tr>
-                                <tr><td>Teléfono</td><td> {{ paciente.telefono }}</td></tr>
-                                <tr><td>E-mail</td><td>{{ paciente.email }}</td></tr>
+                                <tr><td>Fecha de nacimiento</td><td>{{ paciente.fecha_nacimiento|default:"-"}}</td></tr>
+                                <tr><td>Lugar de nacimiento</td><td>{{ paciente.lugar_nacimiento|default:"-"}}</td></tr>
+                                <tr><td>Estado civil</td><td>{{ paciente.estado_civil|default:"-" }}</td></tr>
+                                <tr><td>Género</td><td>{{ paciente.sexo|default:"-" }}</td></tr>
+                                <tr><td>Ocupación</td><td>{{ paciente.ocupacion|default:"-" }}</td></tr>
+                                <tr><td>Domicilio</td><td>{{ paciente.domicilio|default:"-" }}</td></tr>
+                                <tr><td>Teléfono</td><td> {{ paciente.telefono|default:"-" }}</td></tr>
+                                <tr><td>E-mail</td><td>{{ paciente.email|default:"-" }}</td></tr>
                             </tbody>
                         </table>
                     </div>

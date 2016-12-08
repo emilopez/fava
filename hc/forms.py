@@ -6,16 +6,18 @@ from django.utils.translation import ugettext_lazy as _
 class PacienteForm(forms.ModelForm):
     class Meta:
         model = Paciente
-        fields = ('apellido', 'nombre','obra_social','codigo_obra_social', 'documento','fecha_nacimiento', 'nacionalidad', 'estado_civil', 'sexo', 'ocupacion','domicilio','telefono','email',)
+        fields = ('apellido', 'nombre','obra_social','codigo_obra_social', 'documento','fecha_nacimiento', 'lugar_nacimiento', 'estado_civil', 'sexo', 'ocupacion','domicilio','telefono','email',)
         labels = {
             'codigo_obra_social': _('Código obra social'),
+            'fecha_nacimiento':_('Fecha de nacimiento (dd/mm/aaaa)'),
+            'lugar_nacimiento':_('Lugar de nacimiento'),
         }
         widgets = {
             'apellido': forms.TextInput(attrs={'class': 'form-control'}),
             'nombre': forms.TextInput(attrs={'class': 'form-control'}),
             'documento': forms.TextInput(attrs={'class': 'form-control'}),
             'fecha_nacimiento': forms.TextInput(attrs={'class': 'form-control'}),
-            'nacionalidad': forms.Select(attrs={'class': 'form-control'}),
+            'lugar_nacimiento': forms.TextInput(attrs={'class': 'form-control'}),
             'estado_civil': forms.Select(attrs={'class': 'form-control'}),
             'sexo': forms.Select(attrs={'class': 'form-control'}),
             'ocupacion': forms.TextInput(attrs={'class': 'form-control'}),
