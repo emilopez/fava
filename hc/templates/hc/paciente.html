@@ -27,7 +27,8 @@
                             <tbody>
                                 <tr><td>Obra social</td><td>{{ paciente.codigo_obra_social|default:"" }} - {{ paciente.obra_social|default:"" }}</td></tr>
                                 <tr><td>Documento</td><td>{{ paciente.documento }}</td></tr>
-                                <tr><td>Fecha de nacimiento</td><td>{{ paciente.fecha_nacimiento|default:"-"}}</td></tr>
+                                <tr><td>Fecha de nacimiento</td><td>{{ paciente.fecha_nacimiento|date:"d/m/Y"|default:"-"}}</td></tr>
+                                <tr><td>Edad</td><td>{{ paciente.edad|default:"-"}}</td></tr>
                                 <tr><td>Lugar de nacimiento</td><td>{{ paciente.lugar_nacimiento|default:"-"}}</td></tr>
                                 <tr><td>Estado civil</td><td>{{ paciente.estado_civil|default:"-" }}</td></tr>
                                 <tr><td>Género</td><td>{{ paciente.sexo|default:"-" }}</td></tr>

@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 import os
+from datetime import date
 
 class Profesional(models.Model):
     user = models.OneToOneField(User, related_name='profesional')
@@ -29,6 +30,13 @@ class Paciente(models.Model):
     domicilio = models.CharField(max_length = 100, null=True, blank=True)
     telefono = models.CharField(max_length = 50, null=True, blank=True)
     email = models.EmailField(null=True, blank=True)
+
+    def get_edad(self):
+        hoy = date.today()
+        try:
+            return hoy.year - self.fecha_nacimiento.year - ((hoy.month, hoy.day) < (self.fecha_nacimiento.month, self.fecha_nacimiento.day))
+        except:
+            return None
 
     def __str__(self):
         return "{} {}".format(self.nombre, self.apellido)
