@@ -1,5 +1,5 @@
 from django import forms
-from .models import Paciente, Profesional, Consulta, TipoAntecedente, Antecedente
+from .models import Paciente, Profesional, Consulta, TipoAntecedente, Antecedente, Estudio, Parametro
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 
@@ -29,13 +29,11 @@ class PacienteForm(forms.ModelForm):
         }
 
 class ProfesionalForm(forms.ModelForm):
-
     class Meta:
         model = User
         fields = ('username', 'password', 'email', 'last_name', 'first_name',  )
 
 class ConsultaForm(forms.ModelForm):
-
     class Meta:
         model = Consulta
         fields = ('entrada',)
@@ -63,12 +61,22 @@ class TipoAntecedenteForm(forms.ModelForm):
     class Meta:
         model = TipoAntecedente
         fields = ('texto', )
+        labels = {'texto': _('Clasificación'), }# para cambiar la etiqueta
+        widgets = {'texto': forms.TextInput(attrs={'class': 'form-control'}), }
 
-        labels = {
-            'texto': _('Clasificación'), # para cambiar la etiqueta
+class EstudioForm(forms.ModelForm):
+    class Meta:
+        model = Estudio
+        fields = ('texto', )
+        labels = {'texto': _('Nombre del estudio'),}
+        widgets = {'texto': forms.TextInput(attrs={'class': 'form-control'}),}
 
-        }
-
+class ParametroForm(forms.ModelForm):
+    class Meta:
+        model = Parametro
+        fields = ('estudio','texto', )
+        labels = {'texto': _('Parámetro'),}
         widgets = {
+            'estudio': forms.Select(attrs={'class': 'form-control'}),
             'texto': forms.TextInput(attrs={'class': 'form-control'}),
         }

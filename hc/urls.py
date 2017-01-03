@@ -13,4 +13,7 @@ urlpatterns = [
     url(r'^antecedente/nuevo/$', views.antecedente_nuevo, name='antecedente_nuevo'),
     url(r'^antecedente/listar/$', views.antecedentes, name='antecedentes'),
     url(r'^tipoantecedente/listar/$', views.tipo_antecedente_listar, name='tipo_antecedente_listar'),
+    url(r'^estudio/nuevo/$', views.estudio_nuevo, name='estudio_nuevo'),
+    url(r'^estudio/(?P<pk>\d+)/eliminar/$', views.estudio_eliminar, name='estudio_eliminar'),
+    url(r'^parametro/(?P<pk>\d+)/eliminar/$', views.parametro_eliminar, name='parametro_eliminar'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

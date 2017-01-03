@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
-from .models import Paciente, Profesional, Antecedente, TipoAntecedente
-from .forms import PacienteForm, ConsultaForm, AntecedenteForm, TipoAntecedenteForm
+from .models import Paciente, Profesional, Antecedente, TipoAntecedente, Estudio, Parametro
+from .forms import PacienteForm, ConsultaForm, AntecedenteForm, TipoAntecedenteForm, EstudioForm, ParametroForm
 
 from datetime import date
 
@@ -88,3 +88,32 @@ def tipo_antecedente_listar(request):
     else:
         form = TipoAntecedenteForm()
     return render(request, 'hc/tipo_antecedente_listar.html', {'tipos_antecedente': tipos_antecedente, 'form':form})
+
+@login_required
+def estudio_nuevo(request):
+    estudios = Estudio.objects.order_by('texto')
+    if request.method == "POST":
+        if 'guardarestudio' in request.POST:
+            form = EstudioForm(request.POST)
+        elif 'guardarparametro' in request.POST:
+            form = ParametroForm(request.POST)
+        if form.is_valid():
+            item = form.save(commit=False)
+            item.save()
+        return redirect('estudio_nuevo')
+    else:
+        form_estudio = EstudioForm()
+        form_parametro = ParametroForm()
+    return render(request, 'hc/estudio_listar.html', {'estudios':estudios, 'form_estudio':form_estudio, 'form_parametro':form_parametro})
+
+@login_required
+def estudio_eliminar(request, pk):
+    estudio = get_object_or_404(Estudio, pk=pk)
+    estudio.delete()
+    return redirect('estudio_nuevo')
+
+@login_required
+def parametro_eliminar(request, pk):
+    parametro = get_object_or_404(Parametro, pk=pk)
+    parametro.delete()
+    return redirect('estudio_nuevo')

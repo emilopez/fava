@@ -87,3 +87,18 @@ class Historico(models.Model):
         ordering = ["antecedente"]
     def __str__(self):
         return "{}-{}".format(self.paciente, self.antecedente)
+
+class Estudio(models.Model):
+    """Plantillas para los tipos de estudios/laboratorios"""
+    texto = models.TextField()
+
+    def __str__(self):
+        return self.texto
+
+class Parametro(models.Model):
+    """Parámetros de cada estudio"""
+    estudio = models.ForeignKey('hc.Estudio', related_name='parametros')
+    texto = models.TextField()
+
+    def __str__(self):
+        return self.texto
