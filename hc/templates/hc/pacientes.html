@@ -37,6 +37,7 @@
                                 <table class="table table-striped table-bordered table-hover dataTable no-footer dtr-inline" id="dataTables-example" role="grid" aria-describedby="dataTables-example_info" style="width: 100%;" width="100%">
                                     <thead>
                                         <tr role="row">
+                                            <th class="sorting" style="width: 40px;">#</th>
                                             <th class="sorting" style="width: 300px;">Apellido, Nombre</th>
                                             <th class="sorting" style="width: 200px;">Obra Social</th>
                                             <th class="sorting" style="width: 313px;">Edad</th>
@@ -47,6 +48,7 @@
                                     <tbody>
                                         {% for paciente in pacientes %}
                                             <tr class="gradeA odd" role="row">
+                                                <td>{{ paciente.id }}</td>
                                                 <td><a href="{% url 'paciente_detalle' pk=paciente.pk %}">{{ paciente.apellido }}, {{ paciente.nombre }}</a></td>
                                                 <td>{{ paciente.codigo_obra_social }} - {{ paciente.obra_social }}</td>
                                                 <td>{{ paciente.edad|default:"-" }} ({{ paciente.fecha_nacimiento|date:"d/m/Y"|default:"-" }})</td>

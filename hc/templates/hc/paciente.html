@@ -65,9 +65,13 @@
 <div class="row">
     <div class="col-lg-12">
         <div class="panel panel-info">
-            <div class="panel-heading"> <h3 class="panel-title"><i class="glyphicon glyphicon-th-list"></i> Consultas</h3> </div>
+            <div class="panel-heading"> <h3 class="panel-title"><i class="glyphicon glyphicon-th-list"></i> Histórico de Consultas</h3> </div>
             <!-- .panel-heading -->
             <div class="panel-body">
+
+                <div class="panel-body">
+                <a href="#" role="button" class="btn btn-outline btn-primary btn-sm"><i class="glyphicon glyphicon-plus"></i> NUEVA CONSULTA</a>    
+                </div>
                 <div class="panel-group" id="accordion">
                     {% for consulta in paciente.consultas.all %}
                         <div class="panel panel-default">
