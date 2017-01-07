@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from .models import Paciente, Profesional, Antecedente, TipoAntecedente, Estudio, Parametro
-from .forms import PacienteForm, ConsultaForm, AntecedenteForm, TipoAntecedenteForm, EstudioForm, ParametroForm
+from .forms import PacienteForm, ConsultaForm, AntecedenteForm, TipoAntecedenteForm, EstudioForm, ParametroForm, HistoricoForm
 
 from datetime import date
 
@@ -9,22 +9,14 @@ from datetime import date
 def pacientes(request):
     pacientes = Paciente.objects.order_by('apellido')
     for p in pacientes:
-        p.edad = p.get_edad()
+        p.set_edad()
     return render(request, 'hc/pacientes.html', {'pacientes': pacientes})
 
 @login_required
 def paciente_detalle(request, pk):
     paciente = get_object_or_404(Paciente, pk=pk)
-    paciente.edad = paciente.get_edad()
-    if request.method == "POST":
-        form = ConsultaForm(request.POST)
-        if form.is_valid():
-            consulta = form.save(commit=False)
-            consulta.paciente = paciente
-            consulta.save()
-    else:
-        form = ConsultaForm()
-    return render(request, 'hc/paciente.html', {'paciente': paciente, 'form': form})
+    paciente.set_edad()
+    return render(request, 'hc/paciente.html', {'paciente': paciente})
 
 @login_required
 def paciente_nuevo(request):
@@ -117,3 +109,19 @@ def parametro_eliminar(request, pk):
     parametro = get_object_or_404(Parametro, pk=pk)
     parametro.delete()
     return redirect('estudio_nuevo')
+
+def hc_editar(request, pk):
+    paciente = get_object_or_404(Paciente, pk=pk)
+    paciente.set_edad()
+    if request.method == "POST":
+        if 'nueva_consulta' in request.POST:
+            form_consulta = ConsultaForm(request.POST)
+        if form_consulta.is_valid():
+            consulta = form_consulta.save(commit=False)
+            consulta.paciente = paciente
+            consulta.save()
+        return redirect('hc_editar', pk=pk)
+    else:
+        form_consulta = ConsultaForm()
+        form_historico_antecedente = HistoricoForm()
+    return render(request, 'hc/hc_editar.html', {'paciente': paciente, 'form_consulta':form_consulta, 'form_historico_antecedente':form_historico_antecedente})

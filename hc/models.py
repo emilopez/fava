@@ -31,12 +31,12 @@ class Paciente(models.Model):
     telefono = models.CharField(max_length = 50, null=True, blank=True)
     email = models.EmailField(null=True, blank=True)
 
-    def get_edad(self):
+    def set_edad(self):
         hoy = date.today()
         try:
-            return hoy.year - self.fecha_nacimiento.year - ((hoy.month, hoy.day) < (self.fecha_nacimiento.month, self.fecha_nacimiento.day))
+            self.edad = hoy.year - self.fecha_nacimiento.year - ((hoy.month, hoy.day) < (self.fecha_nacimiento.month, self.fecha_nacimiento.day))
         except:
-            return None
+            self.edad = None
 
     def __str__(self):
         return "{} {}".format(self.nombre, self.apellido)
@@ -102,3 +102,16 @@ class Parametro(models.Model):
 
     def __str__(self):
         return self.texto
+
+class Resultado(models.Model):
+    """Resultados de estudios"""
+    paciente = models.ForeignKey('hc.Paciente')
+    estudio = models.ForeignKey('hc.Estudio')
+    fecha = models.DateTimeField(auto_now=True)
+    lugar = models.TextField(blank=True, null=True)
+
+class Valor(models.Model):
+    """Valor resultado de cada parametro de un estudio"""
+    resultado = models.ForeignKey('hc.Resultado')
+    parametro = models.ForeignKey('hc.Parametro')
+    texto = models.TextField(blank=True, null=True)

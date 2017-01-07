@@ -1,0 +1,79 @@
+{% extends 'hc/base.html' %}
+{% block content %}
+
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">
+            <i class="fa fa-fw fa-user"></i> {{ paciente.apellido }}, {{ paciente.nombre }}
+            <a class="btn btn-default" href="{% url 'paciente_editar' pk=paciente.pk %}"><i class="glyphicon glyphicon-pencil"></i></a>
+            <a class="btn btn-default" href="{% url 'paciente_eliminar' pk=paciente.pk %}"><i class="glyphicon glyphicon-remove"></i></a>
+        </h1>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<div class="row">
+    <div class="col-lg-6">
+        <form method="POST" role="form">{% csrf_token %}
+            {{ form_consulta.as_p }}
+            <button type="submit" class="btn btn-default" name='nueva_consulta'>Guardar Consulta</button>
+        </form>
+    </div>
+    <div class="col-lg-6">
+        <form method="POST" role="form">{% csrf_token %}
+            {{ form_historico_antecedente.as_p }}
+            <button type="submit" class="btn btn-default" name='nuevo_antecedente'>Guardar Antecedente</button>
+        </form>
+        <div class="panel panel-info">
+            {% for historico in paciente.historico_set.all %}
+                    {% ifchanged historico.antecedente.tipo %}
+                        <div class="panel-heading"> {{historico.antecedente.tipo}} </div>
+                    {% endifchanged %}
+                    <ul>
+                    <li>{{historico.antecedente.texto}}: {{historico.texto}}</li>
+                    </ul>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-info">
+            <div class="panel-heading"> <h3 class="panel-title"><i class="glyphicon glyphicon-th-list"></i> Histórico de Consultas</h3> </div>
+            <!-- .panel-heading -->
+            <div class="panel-body">
+
+                <div class="panel-body">
+                <a href="#" role="button" class="btn btn-outline btn-primary btn-sm"><i class="glyphicon glyphicon-plus"></i> NUEVA CONSULTA</a>
+                </div>
+                <div class="panel-group" id="accordion">
+                    {% for consulta in paciente.consultas.all %}
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{ forloop.counter }}"><i class="glyphicon glyphicon-expand"></i> {{consulta.fecha}}</a>
+                                </h4>
+                            </div>
+                            <div id="collapse{{ forloop.counter }}" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    {{consulta.entrada}}
+                                </div>
+                                <div class="panel-body">
+                                    <ul class="list-inline">
+                                        {% for adjunto in consulta.adjuntos.all %}
+                                            <li><a href="{{ adjunto.archivo.url }}"><i class="glyphicon glyphicon-file"></i> {{adjunto.filename}}</a></li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <p>No hay consultas :(</p>
+                    {% endfor %}
+                </div>
+            </div>
+            <!-- .panel-body -->
+        </div>
+    </div>
+</div>
+{% endblock %}

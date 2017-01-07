@@ -10,6 +10,7 @@ urlpatterns = [
     url(r'^paciente/nuevo/$', views.paciente_nuevo, name='paciente_nuevo'),
     url(r'^paciente/(?P<pk>\d+)/editar/$', views.paciente_editar, name='paciente_editar'),
     url(r'^paciente/(?P<pk>\d+)/eliminar/$', views.paciente_eliminar, name='paciente_eliminar'),
+    url(r'^paciente/(?P<pk>\d+)/hc/$', views.hc_editar, name='hc_editar'),
     url(r'^antecedente/nuevo/$', views.antecedente_nuevo, name='antecedente_nuevo'),
     url(r'^antecedente/listar/$', views.antecedentes, name='antecedentes'),
     url(r'^tipoantecedente/listar/$', views.tipo_antecedente_listar, name='tipo_antecedente_listar'),
