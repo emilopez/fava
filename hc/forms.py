@@ -1,5 +1,5 @@
 from django import forms
-from .models import Paciente, Profesional, Consulta, TipoAntecedente, Antecedente, Historico, Estudio, Parametro
+from .models import Paciente, Profesional, Consulta, TipoAntecedente, Antecedente, Historico, Estudio, Parametro, Resultado
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 
@@ -38,7 +38,7 @@ class ConsultaForm(forms.ModelForm):
         model = Consulta
         fields = ('entrada',)
         labels = {
-            'entrada': _('Nueva Consulta'), # para cambiar la etiqueta
+            'entrada': _(''), # para cambiar la etiqueta
         }
         widgets = {
             'entrada': forms.Textarea(attrs={'class': 'form-control', 'rows':'3'}),
@@ -85,8 +85,17 @@ class HistoricoForm(forms.ModelForm):
     class Meta:
         model = Historico
         fields = ('antecedente','texto', )
-        labels = {'texto': _('Descripción'),}
+        labels = {'antecedente':'', 'texto': _('Descripción'),}
         widgets = {
             'antecedente': forms.Select(attrs={'class': 'form-control'}),
             'texto': forms.Textarea(attrs={'class': 'form-control', 'rows':'2'}),
         }
+
+# class ResultadoForm(forms.ModelForm):
+#     class Meta:
+#         model = Resultado
+#         fields = ('fecha','lugar', )
+#         widgets = {
+#                 'fecha': forms.TextInput(attrs={'class': 'form-control'}),
+#                 'lugar': forms.TextInput(attrs={'class': 'form-control'}),
+#         }

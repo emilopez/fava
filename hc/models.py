@@ -101,7 +101,7 @@ class Parametro(models.Model):
     texto = models.TextField()
 
     def __str__(self):
-        return self.texto
+        return '{}-{}'.format(self.estudio, self.texto)
 
 class Resultado(models.Model):
     """Resultados de estudios"""
@@ -109,6 +109,8 @@ class Resultado(models.Model):
     estudio = models.ForeignKey('hc.Estudio')
     fecha = models.DateTimeField(auto_now=True)
     lugar = models.TextField(blank=True, null=True)
+    def __str__(self):
+        return '{}-{}-{}'.format(self.paciente, self.estudio, self.fecha)
 
 class Valor(models.Model):
     """Valor resultado de cada parametro de un estudio"""

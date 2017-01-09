@@ -1,7 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
-from .models import Paciente, Profesional, Antecedente, TipoAntecedente, Estudio, Parametro
+from .models import Paciente, Profesional, Antecedente, TipoAntecedente, Estudio, Parametro, Resultado
 from .forms import PacienteForm, ConsultaForm, AntecedenteForm, TipoAntecedenteForm, EstudioForm, ParametroForm, HistoricoForm
+# , ResultadoForm
 
 from datetime import date
 
@@ -110,18 +111,26 @@ def parametro_eliminar(request, pk):
     parametro.delete()
     return redirect('estudio_nuevo')
 
+@login_required
 def hc_editar(request, pk):
     paciente = get_object_or_404(Paciente, pk=pk)
     paciente.set_edad()
     if request.method == "POST":
         if 'nueva_consulta' in request.POST:
             form_consulta = ConsultaForm(request.POST)
-        if form_consulta.is_valid():
-            consulta = form_consulta.save(commit=False)
-            consulta.paciente = paciente
-            consulta.save()
+            if form_consulta.is_valid():
+                consulta = form_consulta.save(commit=False)
+                consulta.paciente = paciente
+                consulta.save()
+        elif 'nuevo_antecedente' in request.POST:
+            form_historico_antecedente = HistoricoForm(request.POST)
+            if form_historico_antecedente.is_valid():
+                form_historico_antecedente = form_historico_antecedente.save(commit=False)
+                form_historico_antecedente.paciente = paciente
+                form_historico_antecedente.save()
         return redirect('hc_editar', pk=pk)
     else:
         form_consulta = ConsultaForm()
         form_historico_antecedente = HistoricoForm()
+        # form_resultado = ResultadoForm()
     return render(request, 'hc/hc_editar.html', {'paciente': paciente, 'form_consulta':form_consulta, 'form_historico_antecedente':form_historico_antecedente})
