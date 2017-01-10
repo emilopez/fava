@@ -1,8 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from .models import Paciente, Profesional, Antecedente, TipoAntecedente, Estudio, Parametro, Resultado
-from .forms import PacienteForm, ConsultaForm, AntecedenteForm, TipoAntecedenteForm, EstudioForm, ParametroForm, HistoricoForm
-# , ResultadoForm
+from .forms import PacienteForm, ConsultaForm, AntecedenteForm, TipoAntecedenteForm, EstudioForm, ParametroForm, HistoricoForm, ResultadoForm
 
 from datetime import date
 
@@ -125,12 +124,18 @@ def hc_editar(request, pk):
         elif 'nuevo_antecedente' in request.POST:
             form_historico_antecedente = HistoricoForm(request.POST)
             if form_historico_antecedente.is_valid():
-                form_historico_antecedente = form_historico_antecedente.save(commit=False)
-                form_historico_antecedente.paciente = paciente
-                form_historico_antecedente.save()
+                historico_antecedente = form_historico_antecedente.save(commit=False)
+                historico_antecedente.paciente = paciente
+                historico_antecedente.save()
+        elif 'nuevo_resultado_estudio' in request.POST:
+            form_resultado_estudio = ResultadoForm(request.POST)
+            if form_resultado_estudio.is_valid():
+                resultado_estudio = form_resultado_estudio.save(commit=False)
+                resultado_estudio.paciente = paciente
+                resultado_estudio.save()
         return redirect('hc_editar', pk=pk)
     else:
         form_consulta = ConsultaForm()
         form_historico_antecedente = HistoricoForm()
-        # form_resultado = ResultadoForm()
-    return render(request, 'hc/hc_editar.html', {'paciente': paciente, 'form_consulta':form_consulta, 'form_historico_antecedente':form_historico_antecedente})
+        form_resultado_estudio = ResultadoForm()
+    return render(request, 'hc/hc_editar.html', {'paciente': paciente, 'form_consulta':form_consulta, 'form_historico_antecedente':form_historico_antecedente, 'form_resultado_estudio':form_resultado_estudio})

@@ -45,7 +45,7 @@ class Paciente(models.Model):
 class Consulta(models.Model):
     paciente = models.ForeignKey('hc.Paciente', related_name='consultas',null=True, blank=True)
     fecha = models.DateTimeField(auto_now=True)   # Almacena la fecha actual
-    entrada = models.TextField(blank=True, null=True)
+    entrada = models.TextField()
 
     class Meta:
         ordering = ["-fecha"]
@@ -111,9 +111,13 @@ class Resultado(models.Model):
     lugar = models.TextField(blank=True, null=True)
     def __str__(self):
         return '{}-{}-{}'.format(self.paciente, self.estudio, self.fecha)
+    class Meta:
+        ordering = ["-fecha"]
 
 class Valor(models.Model):
     """Valor resultado de cada parametro de un estudio"""
     resultado = models.ForeignKey('hc.Resultado')
     parametro = models.ForeignKey('hc.Parametro')
     texto = models.TextField(blank=True, null=True)
+    def __str__(self):
+        return '{}-{}'.format(self.resultado, self.parametro.texto)

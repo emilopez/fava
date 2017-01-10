@@ -15,24 +15,37 @@
     <div class="col-lg-6">
         <div class="panel panel-info">
             <div class="panel-heading"> Nueva Consulta</div>
-            <form method="POST" role="form">{% csrf_token %}
-                {{ form_consulta.as_p }}
-                <button type="submit" class="btn btn-default" name='nueva_consulta'>Guardar Consulta</button>
-            </form>
+            <div class="panel-body">
+                <form method="POST" role="form">{% csrf_token %}
+                    {{ form_consulta.as_p }}
+                    <button type="submit" class="btn btn-default" name='nueva_consulta'>Guardar Consulta</button>
+                </form>
+            </div>
         </div>
-        {% for resultado in paciente.resultado_set.all %}
-            {{resultado}}
-        {% empty %}
-            Ningún estudio
-        {% endfor %}
+        <div class="panel panel-green">
+            <div class="panel-heading">Estudios / Laboratorios </div>
+                <div class="panel-body">
+                    <form method="POST" role="form">{% csrf_token %}
+                        {{ form_resultado_estudio.as_p }}
+                        <button type="submit" class="btn btn-default" name='nuevo_resultado_estudio'>Cargar Nuevo Resultado</button>
+                    </form>
+                    {% for resultado in paciente.resultado_set.all %}
+                        <p><a href="#">{{resultado.fecha}} - {{resultado.estudio}}</a></p>
+                    {% empty %}
+                        Ningún estudio
+                    {% endfor %}
+                </div>
+        </div>
     </div>
     <div class="col-lg-6">
         <div class="panel panel-info">
             <div class="panel-heading"> Cargar Antecedentes </div>
-            <form method="POST" role="form">{% csrf_token %}
-                {{ form_historico_antecedente.as_p }}
-                <button type="submit" class="btn btn-default" name='nuevo_antecedente'>Guardar Antecedente</button>
-            </form>
+            <div class="panel-body">
+                <form method="POST" role="form">{% csrf_token %}
+                    {{ form_historico_antecedente.as_p }}
+                    <button type="submit" class="btn btn-default" name='nuevo_antecedente'>Guardar Antecedente</button>
+                </form>
+            </div>
         </div>
             <div class="panel panel-info">
                 {% for historico in paciente.historico_set.all %}
@@ -55,7 +68,7 @@
             <div class="panel-body">
 
                 <div class="panel-body">
-                <a href="#" role="button" class="btn btn-outline btn-primary btn-sm"><i class="glyphicon glyphicon-plus"></i> NUEVA CONSULTA</a>
+                    <a href="#" role="button" class="btn btn-outline btn-primary btn-sm"><i class="glyphicon glyphicon-plus"></i> NUEVA CONSULTA</a>
                 </div>
                 <div class="panel-group" id="accordion">
                     {% for consulta in paciente.consultas.all %}

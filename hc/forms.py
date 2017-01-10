@@ -91,11 +91,11 @@ class HistoricoForm(forms.ModelForm):
             'texto': forms.Textarea(attrs={'class': 'form-control', 'rows':'2'}),
         }
 
-# class ResultadoForm(forms.ModelForm):
-#     class Meta:
-#         model = Resultado
-#         fields = ('fecha','lugar', )
-#         widgets = {
-#                 'fecha': forms.TextInput(attrs={'class': 'form-control'}),
-#                 'lugar': forms.TextInput(attrs={'class': 'form-control'}),
-#         }
+class ResultadoForm(forms.ModelForm):
+    class Meta:
+        model = Resultado
+        fields = ('estudio','lugar', )
+        widgets = {
+                'estudio': forms.Select(attrs={'class': 'form-control'}),
+                'lugar': forms.TextInput(attrs={'class': 'form-control'}),
+        }
