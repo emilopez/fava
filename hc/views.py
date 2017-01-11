@@ -26,7 +26,7 @@ def paciente_nuevo(request):
             paciente = form.save(commit=False)
             paciente.medico = request.user
             paciente.save()
-            return redirect('paciente_detalle', pk=paciente.pk)
+            return redirect('hc_editar', pk=paciente.pk)
     else:
         form = PacienteForm()
     return render(request, 'hc/paciente_editar.html', {'form': form})

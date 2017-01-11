@@ -29,11 +29,46 @@
                         {{ form_resultado_estudio.as_p }}
                         <button type="submit" class="btn btn-default" name='nuevo_resultado_estudio'>Cargar Nuevo Resultado</button>
                     </form>
-                    {% for resultado in paciente.resultado_set.all %}
-                        <p><a href="#">{{resultado.fecha}} - {{resultado.estudio}}</a></p>
-                    {% empty %}
-                        Ningún estudio
-                    {% endfor %}
+
+                    <div class="panel-group" id="accordion">
+                        {% for resultado in paciente.resultado_set.all %}
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion" href="#estudio{{ forloop.counter }}">
+                                            <i class="glyphicon glyphicon-file"></i> {{resultado.fecha|date:"SHORT_DATE_FORMAT"}} - {{resultado.estudio}}
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="estudio{{ forloop.counter }}" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <table class="table table-bordered table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th colspan="2">{{resultado.lugar}}</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for valor in resultado.valor_set.all %}
+                                                   <tr>
+                                                       <th>{{valor.parametro.texto}}</th>
+                                                       <td>{{valor.texto}}</td>
+                                                   </tr>
+                                                {% empty %}
+                                                    <a href="#">Cargar valores</a>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+                            </div>
+                        {% empty %}
+                            <p>No hay estudios :(</p>
+                        {% endfor %}
+                    </div>
+
+
                 </div>
         </div>
     </div>
@@ -75,7 +110,7 @@
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <h4 class="panel-title">
-                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{ forloop.counter }}"><i class="glyphicon glyphicon-expand"></i> {{consulta.fecha}}</a>
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{ forloop.counter }}"><i class="glyphicon glyphicon-expand"></i> {{consulta.fecha|date:"SHORT_DATE_FORMAT"}}</a>
                                 </h4>
                             </div>
                             <div id="collapse{{ forloop.counter }}" class="panel-collapse collapse">
