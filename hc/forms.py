@@ -1,5 +1,5 @@
 from django import forms
-from .models import Paciente, Profesional, Consulta, TipoAntecedente, Antecedente, Historico, Estudio, Parametro, Resultado
+from .models import Paciente, Profesional, Consulta, TipoAntecedente, Antecedente, Historico, Estudio, Parametro, Resultado, Valor
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 
@@ -74,7 +74,7 @@ class EstudioForm(forms.ModelForm):
 class ParametroForm(forms.ModelForm):
     class Meta:
         model = Parametro
-        fields = ('estudio','texto', )
+        fields = ('estudio','texto',)
         labels = {'texto': _('Parámetro'),}
         widgets = {
             'estudio': forms.Select(attrs={'class': 'form-control'}),
@@ -84,7 +84,7 @@ class ParametroForm(forms.ModelForm):
 class HistoricoForm(forms.ModelForm):
     class Meta:
         model = Historico
-        fields = ('antecedente','texto', )
+        fields = ('antecedente','texto',)
         labels = {'antecedente':'', 'texto': _('Descripción'),}
         widgets = {
             'antecedente': forms.Select(attrs={'class': 'form-control'}),
@@ -94,8 +94,17 @@ class HistoricoForm(forms.ModelForm):
 class ResultadoForm(forms.ModelForm):
     class Meta:
         model = Resultado
-        fields = ('estudio','lugar', )
+        fields = ('estudio','lugar',)
         widgets = {
                 'estudio': forms.Select(attrs={'class': 'form-control'}),
                 'lugar': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+
+class ValorForm(forms.ModelForm):
+    class Meta:
+        model = Valor
+        fields = ('parametro', 'texto',)
+        labels = {'parametro':_('Parámetro'), 'texto': _('Valor/Descripción'),}
+        widgets = {
+            'texto':forms.TextInput(attrs={'class': 'form-control'}),
         }

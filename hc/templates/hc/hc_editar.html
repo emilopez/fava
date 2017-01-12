@@ -54,11 +54,11 @@
                                                        <th>{{valor.parametro.texto}}</th>
                                                        <td>{{valor.texto}}</td>
                                                    </tr>
-                                                {% empty %}
-                                                    <a href="#">Cargar valores</a>
                                                 {% endfor %}
                                             </tbody>
                                         </table>
+
+                                        <a href="{% url 'nuevo_valor' pk_resultado=resultado.pk pk_estudio=resultado.estudio.pk %}" role="button" class="btn btn-outline btn-primary btn-sm"><i class="glyphicon glyphicon-plus"></i> NUEVO VALOR</a>
                                     </div>
 
                                 </div>

@@ -1,8 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from .models import Paciente, Profesional, Antecedente, TipoAntecedente, Estudio, Parametro, Resultado
-from .forms import PacienteForm, ConsultaForm, AntecedenteForm, TipoAntecedenteForm, EstudioForm, ParametroForm, HistoricoForm, ResultadoForm
-
+from .forms import PacienteForm, ConsultaForm, AntecedenteForm, TipoAntecedenteForm, EstudioForm, ParametroForm, HistoricoForm, ResultadoForm, ValorForm
+from django import forms
 from datetime import date
 
 @login_required
@@ -139,3 +139,21 @@ def hc_editar(request, pk):
         form_historico_antecedente = HistoricoForm()
         form_resultado_estudio = ResultadoForm()
     return render(request, 'hc/hc_editar.html', {'paciente': paciente, 'form_consulta':form_consulta, 'form_historico_antecedente':form_historico_antecedente, 'form_resultado_estudio':form_resultado_estudio})
+
+@login_required
+def nuevo_valor(request, pk_resultado, pk_estudio):
+    estudio = get_object_or_404(Estudio, pk=pk_estudio)
+    resultado = get_object_or_404(Resultado, pk=pk_resultado)
+    if request.POST:
+        form = ValorForm(request.POST)
+        if form.is_valid():
+            valor = form.save(commit=False)
+            valor.resultado = resultado
+            valor.save()
+        return redirect('hc_editar', pk=resultado.paciente.pk)
+    else:
+        form = ValorForm()
+        form.fields['parametro'] = forms.ModelChoiceField(Parametro.objects.filter(estudio=pk_estudio), widget=forms.Select(attrs={'class': 'form-control'}))
+        print(form)
+
+    return render(request, 'hc/valor_editar.html', {'form':form, 'estudio':estudio})

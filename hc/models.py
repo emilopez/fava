@@ -101,7 +101,7 @@ class Parametro(models.Model):
     texto = models.TextField()
 
     def __str__(self):
-        return '{}-{}'.format(self.estudio, self.texto)
+        return self.texto
 
 class Resultado(models.Model):
     """Resultados de estudios"""
