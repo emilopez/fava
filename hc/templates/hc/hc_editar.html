@@ -5,7 +5,7 @@
     <div class="col-lg-12">
         <h1 class="page-header">
             <i class="fa fa-fw fa-user"></i> {{ paciente.apellido }}, {{ paciente.nombre }}
-            <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModal">
+            <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">
                 Datos de filiación
             </button>
             <a class="btn btn-default" href="{% url 'paciente_editar' pk=paciente.pk %}"><i class="glyphicon glyphicon-pencil"></i></a>
