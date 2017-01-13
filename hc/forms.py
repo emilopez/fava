@@ -41,7 +41,7 @@ class ConsultaForm(forms.ModelForm):
             'entrada': _(''), # para cambiar la etiqueta
         }
         widgets = {
-            'entrada': forms.Textarea(attrs={'class': 'form-control', 'rows':'3'}),
+            'entrada': forms.Textarea(attrs={'class': 'form-control', 'rows':'9'}),
         }
 
 class AntecedenteForm(forms.ModelForm):
@@ -88,7 +88,7 @@ class HistoricoForm(forms.ModelForm):
         labels = {'antecedente':'', 'texto': _('Descripción'),}
         widgets = {
             'antecedente': forms.Select(attrs={'class': 'form-control'}),
-            'texto': forms.Textarea(attrs={'class': 'form-control', 'rows':'2'}),
+            'texto': forms.Textarea(attrs={'class': 'form-control', 'rows':'1'}),
         }
 
 class ResultadoForm(forms.ModelForm):

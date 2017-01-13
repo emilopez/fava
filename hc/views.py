@@ -40,7 +40,7 @@ def paciente_editar(request, pk):
             paciente = form.save(commit=False)
             paciente.medico = request.user
             paciente.save()
-            return redirect('paciente_detalle', pk=paciente.pk)
+            return redirect('hc_editar', pk=paciente.pk)
     else:
         form = PacienteForm(instance=paciente)
     return render(request, 'hc/paciente_editar.html', {'form': form})
@@ -150,10 +150,9 @@ def nuevo_valor(request, pk_resultado, pk_estudio):
             valor = form.save(commit=False)
             valor.resultado = resultado
             valor.save()
-        return redirect('hc_editar', pk=resultado.paciente.pk)
+        # return redirect('hc_editar', pk=resultado.paciente.pk)
+        return redirect('nuevo_valor', pk_resultado, pk_estudio)
     else:
         form = ValorForm()
         form.fields['parametro'] = forms.ModelChoiceField(Parametro.objects.filter(estudio=pk_estudio), widget=forms.Select(attrs={'class': 'form-control'}))
-        print(form)
-
-    return render(request, 'hc/valor_editar.html', {'form':form, 'estudio':estudio})
+    return render(request, 'hc/valor_editar.html', {'form':form, 'estudio':estudio, 'resultado':resultado})
