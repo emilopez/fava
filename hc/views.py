@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
-from .models import Paciente, Profesional, Antecedente, TipoAntecedente, Estudio, Parametro, Resultado
+from .models import Paciente, Profesional, Antecedente, TipoAntecedente, Estudio, Parametro, Resultado, Consulta
 from .forms import PacienteForm, ConsultaForm, AntecedenteForm, TipoAntecedenteForm, EstudioForm, ParametroForm, HistoricoForm, ResultadoForm, ValorForm
 from django import forms
 from datetime import date
@@ -111,10 +111,10 @@ def parametro_eliminar(request, pk):
     return redirect('estudio_nuevo')
 
 @login_required
-def hc_editar(request, pk):
+def hc_editar(request, pk, pk_consulta=None):
     paciente = get_object_or_404(Paciente, pk=pk)
     paciente.set_edad()
-    if request.method == "POST":
+    if request.POST:
         if 'nueva_consulta' in request.POST:
             form_consulta = ConsultaForm(request.POST)
             if form_consulta.is_valid():
@@ -156,3 +156,21 @@ def nuevo_valor(request, pk_resultado, pk_estudio):
         form = ValorForm()
         form.fields['parametro'] = forms.ModelChoiceField(Parametro.objects.filter(estudio=pk_estudio), widget=forms.Select(attrs={'class': 'form-control'}))
     return render(request, 'hc/valor_editar.html', {'form':form, 'estudio':estudio, 'resultado':resultado})
+
+@login_required
+def consulta_editar(request, pk):
+    consulta = get_object_or_404(Consulta, pk=pk)
+    if request.POST:
+        form = ConsultaForm(request.POST, instance=consulta)
+        if form.is_valid():
+            consulta = form.save(commit=False)
+            consulta.fecha = consulta.fecha
+            consulta.save()
+            return redirect('hc_editar', pk=consulta.paciente.pk)
+    else:
+        form = ConsultaForm(instance=consulta)
+    return render(request, 'hc/consulta_editar.html', {'form': form, 'consulta':consulta})
+
+@login_required
+def consulta_eliminar(request, pk):
+    pass

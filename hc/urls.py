@@ -18,4 +18,6 @@ urlpatterns = [
     url(r'^estudio/nuevo/$', views.estudio_nuevo, name='estudio_nuevo'),
     url(r'^estudio/(?P<pk>\d+)/eliminar/$', views.estudio_eliminar, name='estudio_eliminar'),
     url(r'^parametro/(?P<pk>\d+)/eliminar/$', views.parametro_eliminar, name='parametro_eliminar'),
+    url(r'^consulta/(?P<pk>\d+)/editar/$', views.consulta_editar, name='consulta_editar'),
+    url(r'^consulta/(?P<pk>\d+)/eliminar/$', views.consulta_eliminar, name='consulta_eliminar'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
