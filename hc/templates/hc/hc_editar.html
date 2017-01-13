@@ -59,7 +59,6 @@
                 </form>
             </div>
         </div>
-
     </div>
     <div class="col-lg-6">
         <div class="panel panel-info">
@@ -90,14 +89,14 @@
             <div class="panel-heading"> <h3 class="panel-title"><i class="glyphicon glyphicon-th-list"></i> Consultas previas</h3> </div>
             <!-- .panel-heading -->
             <div class="panel-body">
-
-
                 <div class="panel-group" id="accordion">
                     {% for consulta in paciente.consultas.all %}
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <h4 class="panel-title">
-                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{ forloop.counter }}"><i class="glyphicon glyphicon-expand"></i> {{consulta.fecha|date:"SHORT_DATE_FORMAT"}}</a>
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{ forloop.counter }}">
+                                        <i class="glyphicon glyphicon-expand"></i> {{consulta.fecha|date:"SHORT_DATE_FORMAT"}}
+                                    </a>
                                 </h4>
                             </div>
                             <div id="collapse{{ forloop.counter }}" class="panel-collapse collapse">
@@ -110,6 +109,18 @@
                                             <li><a href="{{ adjunto.archivo.url }}"><i class="glyphicon glyphicon-file"></i> {{adjunto.filename}}</a></li>
                                         {% endfor %}
                                     </ul>
+                                    <div class="btn-group">
+                                               <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
+                                                   <i class="fa fa-gear"></i> <span class="caret"></span>
+                                               </button>
+                                               <ul class="dropdown-menu" role="menu">
+                                                   <li><a href="#">Editar</a>
+                                                   </li>
+                                                   <li class="divider"></li>
+                                                   <li><a href="#">Eliminar</a>
+                                                   </li>
+                                               </ul>
+                                           </div>
                                 </div>
                             </div>
                         </div>
