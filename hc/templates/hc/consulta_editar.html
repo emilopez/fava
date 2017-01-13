@@ -1,0 +1,26 @@
+{% extends 'hc/base.html' %}
+{% block content %}
+
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">
+            <i class="fa fa-fw fa-user"></i> {{ consulta.paciente.apellido }}, {{ consulta.paciente.nombre }}
+        </h1>
+
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<div class="row">
+    <div class="col-lg-6">
+        <div class="panel panel-info">
+            <div class="panel-heading"> Editar Consulta</div>
+            <div class="panel-body">
+                <form method="POST" role="form">{% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-default" name='nueva_consulta'>Guardar Consulta</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
