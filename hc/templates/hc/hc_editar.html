@@ -22,7 +22,6 @@
                             <h4 class="modal-title" id="myModalLabel">Datos de filiación</h4>
                         </div>
                         <div class="modal-body">
-                            <div class="table-responsive">
                                 <table class="table table-striped">
                                     <tbody>
                                         <tr><td>Apellido y nombre</td><td>{{ paciente.apellido }}, {{ paciente.nombre }}</td></tr>
@@ -39,8 +38,6 @@
                                         <tr><td>E-mail</td><td>{{ paciente.email|default:"-" }}</td></tr>
                                     </tbody>
                                 </table>
-                            </div>
-                            <!-- /.table-responsive -->
                         </div>
                     </div>
                     <!-- /.modal-content -->
