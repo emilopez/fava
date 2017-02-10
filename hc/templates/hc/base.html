@@ -13,6 +13,9 @@
         <link href="{% static 'dist/css/sb-admin-2.css' %}" rel="stylesheet">
         <link href="{% static 'vendor/morrisjs/morris.css' %}" rel="stylesheet">
         <link href="{% static 'vendor/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
+
+        <link href="{% static 'DataTables/media/css/jquery.dataTables.css' %}" rel="stylesheet" type="text/css">
+
     </head>
 
 <body>
@@ -94,11 +97,22 @@
    <script src="{% static 'vendor/morrisjs/morris.min.js' %}"></script>
    <script src="{% static 'data/morris-data.js' %}"></script>
    <script src="{% static 'dist/js/sb-admin-2.js' %}"></script>
-
-   <script>
+   <script src="{% static 'DataTables/media/js/jquery.dataTables.js' %}" type="text/javascript" charset="utf8" ></script>
+   <script type="text/javascript">
    $(document).ready(function() {
        $('#dataTables-example').DataTable({
-           responsive: true
+           responsive: true,
+           language: {
+               lengthMenu:     "Ver _MENU_ pacientes",
+               search: "Buscar",
+               info: "_START_ / _END_ de _TOTAL_ pacientes",
+               paginate: {
+                        first:      "Primero",
+                        previous:   "Previo",
+                        next:       "Siguiente",
+                        last:       "&uacute;ltimo"
+                    },
+           }
        });
    });
    </script>
