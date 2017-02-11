@@ -85,7 +85,7 @@ class HistoricoForm(forms.ModelForm):
     class Meta:
         model = Historico
         fields = ('antecedente','texto',)
-        labels = {'antecedente':'', 'texto': _('Descripción'),}
+        labels = {'antecedente':'Tipo', 'texto': _('Descripción'),}
         widgets = {
             'antecedente': forms.Select(attrs={'class': 'form-control'}),
             'texto': forms.Textarea(attrs={'class': 'form-control', 'rows':'1'}),
