@@ -38,11 +38,13 @@ class ProfesionalForm(forms.ModelForm):
 class ConsultaForm(forms.ModelForm):
     class Meta:
         model = Consulta
-        fields = ('entrada',)
+        fields = ('motivo','entrada', )
         labels = {
-            'entrada': _(''), # para cambiar la etiqueta
+            'motivo': _('Motivo'), # para cambiar la etiqueta
+            'entrada': _('Actual'), # para cambiar la etiqueta
         }
         widgets = {
+            'motivo': forms.Textarea(attrs={'class': 'form-control', 'rows':'2'}),
             'entrada': forms.Textarea(attrs={'class': 'form-control', 'rows':'9'}),
         }
 

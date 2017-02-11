@@ -13,7 +13,7 @@
 <div class="row">
     <div class="col-lg-6">
         <div class="panel panel-info">
-            <div class="panel-heading"> Editar Consulta</div>
+            <div class="panel-heading"> Consulta del {{ consulta.fecha |date:"SHORT_DATE_FORMAT" }}</div>
             <div class="panel-body">
                 <form method="POST" role="form">{% csrf_token %}
                     {{ form.as_p }}

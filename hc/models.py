@@ -46,6 +46,7 @@ class Consulta(models.Model):
     paciente = models.ForeignKey('hc.Paciente', related_name='consultas',null=True, blank=True)
     fecha = models.DateTimeField(auto_now_add=True)   # Almacena la fecha actual
     entrada = models.TextField(null=True, blank=True)
+    motivo = models.TextField(null=True, blank=True)
 
     class Meta:
         ordering = ["-fecha"]
