@@ -5,16 +5,18 @@
     <div class="col-lg-12">
         <h1 class="page-header">
             <i class="fa fa-fw fa-user"></i> {{ paciente.apellido }}, {{ paciente.nombre }}
-            <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">
+            <button class="btn btn-default btn-sm" data-toggle="modal" data-target="#filiacion">
                 Datos de filiación
             </button>
             <a class="btn btn-default" href="{% url 'paciente_editar' pk=paciente.pk %}"><i class="glyphicon glyphicon-pencil"></i></a>
-            <a class="btn btn-default" href="{% url 'paciente_eliminar' pk=paciente.pk %}"><i class="glyphicon glyphicon-remove"></i></a>
+            <button class="btn btn-danger" data-toggle="modal" data-target="#eliminar">
+                <i class="glyphicon glyphicon-remove"></i>
+            </button>
         </h1>
         <!-- Button trigger modal -->
 
             <!-- Modal -->
-            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+            <div class="modal fade" id="filiacion" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -38,6 +40,26 @@
                                         <tr><td>E-mail</td><td>{{ paciente.email|default:"-" }}</td></tr>
                                     </tbody>
                                 </table>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+            <!-- /.modal -->
+
+            <!-- Modal -->
+            <div class="modal fade" id="eliminar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            <h4 class="modal-title" id="myModalLabel">¿Confirma eliminar {{ paciente.apellido }}, {{ paciente.nombre }}?</h4>
+                        </div>
+                        <div class="modal-body">
+                            <a href="{% url 'paciente_eliminar' pk=paciente.pk %}" role="button" class="btn btn-outline btn-danger btn-sm">
+                                <i class="glyphicon glyphicon-remove"></i> SI, ELIMINAR
+                            </a>
                         </div>
                     </div>
                     <!-- /.modal-content -->
@@ -161,11 +183,25 @@
         <div class="panel panel-green">
             <div class="panel-heading"><b>Estudios / Laboratorios </b> </div>
                 <div class="panel-body">
-                    <form method="POST" role="form">{% csrf_token %}
-                        {{ form_resultado_estudio.as_p }}
-                        <button type="submit" class="btn btn-default" name='nuevo_resultado_estudio'>Crear estudio</button>
-                    </form>
                     <div class="panel-group" id="accordion">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion" href="#nuevoestudio">
+                                            <i class="glyphicon glyphicon-plus"></i> Nuevo estudio
+                                        </a>
+                                    </h4>
+                                </div>
+
+                                <div id="nuevoestudio" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <form method="POST" role="form">{% csrf_token %}
+                                            {{ form_resultado_estudio.as_p }}
+                                            <button type="submit" class="btn btn-default" name='nuevo_resultado_estudio'>Crear estudio</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
                         {% for resultado in paciente.resultado_set.all %}
                             <div class="panel panel-default">
                                 <div class="panel-heading">
