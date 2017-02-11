@@ -116,7 +116,8 @@
                             </div>
                             <div id="collapse{{ forloop.counter }}" class="panel-collapse collapse">
                                 <div class="panel-body">
-                                    {{consulta.entrada}}
+                                    <h4>Motivo</h4><p>{{consulta.motivo |default:""}}</p>
+                                    <h4>Consulta</h4><p>{{consulta.entrada|default:""}}</p>
                                 </div>
                                 <div class="panel-body">
                                     <ul class="list-inline">
