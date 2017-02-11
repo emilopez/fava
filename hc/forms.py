@@ -96,10 +96,11 @@ class HistoricoForm(forms.ModelForm):
 class ResultadoForm(forms.ModelForm):
     class Meta:
         model = Resultado
-        fields = ('estudio','lugar',)
+        fields = ('estudio','lugar', 'fecha',)
         widgets = {
                 'estudio': forms.Select(attrs={'class': 'form-control'}),
                 'lugar': forms.TextInput(attrs={'class': 'form-control'}),
+                'fecha': SelectDateWidget(),
         }
 
 class ValorForm(forms.ModelForm):

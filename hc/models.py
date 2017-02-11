@@ -107,7 +107,7 @@ class Resultado(models.Model):
     """Resultados de estudios"""
     paciente = models.ForeignKey('hc.Paciente')
     estudio = models.ForeignKey('hc.Estudio')
-    fecha = models.DateTimeField(auto_now=True)
+    fecha = models.DateField(null=True, blank=True, default=timezone.now)
     lugar = models.TextField(blank=True, null=True)
     def __str__(self):
         return '{}-{}-{}'.format(self.paciente, self.estudio, self.fecha)
