@@ -65,24 +65,39 @@
         <div class="panel panel-yellow">
             <div class="panel-heading"><b>Antecedentes</b> </div>
                 <div class="panel-body">
-                    <form method="POST" role="form">{% csrf_token %}
-                        {{ form_historico_antecedente.as_p }}
-                        <button type="submit" class="btn btn-default" name='nuevo_antecedente'>Nuevo Antecedente</button>
-                    </form>
                     <div class="panel-group" id="accordion">
                             <div class="panel panel-default">
                                 <div class="panel-heading">
                                     <h4 class="panel-title">
-                                        <a data-toggle="collapse" data-parent="#accordion" href="#antecedente{{ forloop.counter }}">
-                                            <i class="fa fa-medkit fa-fw"></i> Ver Antecedentes
+                                        <a data-toggle="collapse" data-parent="#accordion" href="#nuevoantecedente">
+                                            <i class="glyphicon glyphicon-plus"></i> Cargar nuevo
                                         </a>
                                     </h4>
                                 </div>
-                                <div id="antecedente{{ forloop.counter }}" class="panel-collapse collapse">
+                                <div id="nuevoantecedente" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <div class="panel-heading">
+                                            <form method="POST" role="form">{% csrf_token %}
+                                                {{ form_historico_antecedente.as_p }}
+                                                <button type="submit" class="btn btn-default" name='nuevo_antecedente'>Nuevo Antecedente</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion" href="#antecedentes">
+                                            <i class="fa fa-medkit fa-fw"></i> Ver cargados
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="antecedentes" class="panel-collapse collapse">
                                     <div class="panel-body">
                                         {% for historico in paciente.historico_set.all %}
                                                 {% ifchanged historico.antecedente.tipo %}
-                                                    <div class="panel-heading"> <b>{{historico.antecedente.tipo}} </b></div>
+                                                    <h4>{{historico.antecedente.tipo}} </h4>
                                                 {% endifchanged %}
                                                 <ul>
                                                     <li>{{historico.antecedente.texto}}: {{historico.texto}}</li>
@@ -91,7 +106,6 @@
                                     </div>
                                 </div>
                             </div>
-
                     </div>
                 </div>
         </div>
