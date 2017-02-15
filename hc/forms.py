@@ -102,7 +102,7 @@ class ResultadoForm(forms.ModelForm):
         widgets = {
                 'estudio': forms.Select(attrs={'class': 'form-control'}),
                 'lugar': forms.TextInput(attrs={'class': 'form-control'}),
-                'fecha': SelectDateWidget(),
+                'fecha': SelectDateWidget(years=range(date.today().year-10, date.today().year+1)),
         }
 
 class ValorForm(forms.ModelForm):
