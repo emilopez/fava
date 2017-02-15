@@ -31,7 +31,7 @@
                                         {% for paciente in pacientes %}
                                             <tr class="gradeA odd" role="row">
                                                 <td>{{ paciente.id }}</td>
-                                                <td><a href="{% url 'hc_editar' pk=paciente.pk %}">{{ paciente.apellido }}, {{ paciente.nombre }}</a></td>
+                                                <td><a href="{% url 'hc_consultas' pk=paciente.pk %}">{{ paciente.apellido }}, {{ paciente.nombre }}</a></td>
                                                 <td>{{ paciente.codigo_obra_social }} - {{ paciente.obra_social }}</td>
                                                 <td>{{ paciente.edad|default:"-" }}</td>
                                                 <td>{{ paciente.documento|default:"-" }}</td>
