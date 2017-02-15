@@ -141,6 +141,51 @@ def hc_editar(request, pk, pk_consulta=None):
     return render(request, 'hc/hc_editar.html', {'paciente': paciente, 'form_consulta':form_consulta, 'form_historico_antecedente':form_historico_antecedente, 'form_resultado_estudio':form_resultado_estudio})
 
 @login_required
+def hc_consultas(request, pk, pk_consulta=None):
+    paciente = get_object_or_404(Paciente, pk=pk)
+    paciente.set_edad()
+    if request.POST:
+        form_consulta = ConsultaForm(request.POST)
+        if form_consulta.is_valid():
+            consulta = form_consulta.save(commit=False)
+            consulta.paciente = paciente
+            consulta.save()
+        return redirect('hc_consultas', pk=pk)
+    else:
+        form_consulta = ConsultaForm()
+    return render(request, 'hc/hc_consultas.html', {'paciente': paciente, 'form_consulta':form_consulta})
+
+@login_required
+def hc_antecedentes(request, pk, pk_consulta=None):
+    paciente = get_object_or_404(Paciente, pk=pk)
+    paciente.set_edad()
+    if request.POST:
+        form_historico_antecedente = HistoricoForm(request.POST)
+        if form_historico_antecedente.is_valid():
+            historico_antecedente = form_historico_antecedente.save(commit=False)
+            historico_antecedente.paciente = paciente
+            historico_antecedente.save()
+        return redirect('hc_antecedentes', pk=pk)
+    else:
+        form_historico_antecedente = HistoricoForm()
+    return render(request, 'hc/hc_antecedentes.html', {'paciente': paciente, 'form_historico_antecedente':form_historico_antecedente})
+
+@login_required
+def hc_estudios(request, pk, pk_consulta=None):
+    paciente = get_object_or_404(Paciente, pk=pk)
+    paciente.set_edad()
+    if request.POST:
+        form_resultado_estudio = ResultadoForm(request.POST)
+        if form_resultado_estudio.is_valid():
+            resultado_estudio = form_resultado_estudio.save(commit=False)
+            resultado_estudio.paciente = paciente
+            resultado_estudio.save()
+        return redirect('hc_estudios', pk=pk)
+    else:
+        form_resultado_estudio = ResultadoForm()
+    return render(request, 'hc/hc_estudios.html', {'paciente': paciente, 'form_resultado_estudio':form_resultado_estudio})
+
+@login_required
 def nuevo_valor(request, pk_resultado, pk_estudio):
     estudio = get_object_or_404(Estudio, pk=pk_estudio)
     resultado = get_object_or_404(Resultado, pk=pk_resultado)

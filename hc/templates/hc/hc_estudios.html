@@ -1,0 +1,142 @@
+{% extends 'hc/base.html' %}
+{% block content %}
+
+<div class="row">
+    <div class="col-lg-12">
+
+           <!-- Nav tabs -->
+           <ul class="nav nav-tabs">
+               <li><a href="{% url 'hc_consultas' pk=paciente.pk %}">Consultas</a></li>
+               <li><a href="{% url 'hc_antecedentes' pk=paciente.pk %}">Antecedentes</a></li>
+               <li class="active"><a href="#">Estudios/Laboratorios</a></li>
+           </ul>
+
+        <h1 class="page-header">
+            <i class="fa fa-fw fa-user"></i> {{ paciente.apellido }}, {{ paciente.nombre }}
+            <button class="btn btn-default btn-sm" data-toggle="modal" data-target="#filiacion">
+                Datos de filiación
+            </button>
+            <a class="btn btn-default" href="{% url 'paciente_editar' pk=paciente.pk %}"><i class="glyphicon glyphicon-pencil"></i></a>
+            <button class="btn btn-danger" data-toggle="modal" data-target="#eliminar">
+                <i class="glyphicon glyphicon-remove"></i>
+            </button>
+        </h1>
+        <!-- Button trigger modal -->
+
+            <!-- Modal -->
+            <div class="modal fade" id="filiacion" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            <h4 class="modal-title" id="myModalLabel">Datos de filiación</h4>
+                        </div>
+                        <div class="modal-body">
+                                <table class="table table-striped">
+                                    <tbody>
+                                        <tr><td>Apellido y nombre</td><td>{{ paciente.apellido }}, {{ paciente.nombre }}</td></tr>
+                                        <tr><td>Obra social</td><td>{{ paciente.codigo_obra_social|default:"" }} - {{ paciente.obra_social|default:"" }}</td></tr>
+                                        <tr><td>Documento</td><td>{{ paciente.documento }}</td></tr>
+                                        <tr><td>Fecha de nacimiento</td><td>{{ paciente.fecha_nacimiento|date:"d/m/Y"|default:"-"}}</td></tr>
+                                        <tr><td>Edad</td><td>{{ paciente.edad|default:"-"}}</td></tr>
+                                        <tr><td>Lugar de nacimiento</td><td>{{ paciente.lugar_nacimiento|default:"-"}}</td></tr>
+                                        <tr><td>Estado civil</td><td>{{ paciente.estado_civil|default:"-" }}</td></tr>
+                                        <tr><td>Género</td><td>{{ paciente.sexo|default:"-" }}</td></tr>
+                                        <tr><td>Ocupación</td><td>{{ paciente.ocupacion|default:"-" }}</td></tr>
+                                        <tr><td>Domicilio</td><td>{{ paciente.domicilio|default:"-" }}</td></tr>
+                                        <tr><td>Teléfono</td><td> {{ paciente.telefono|default:"-" }}</td></tr>
+                                        <tr><td>E-mail</td><td>{{ paciente.email|default:"-" }}</td></tr>
+                                    </tbody>
+                                </table>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+            <!-- /.modal -->
+
+            <!-- Modal -->
+            <div class="modal fade" id="eliminar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            <h4 class="modal-title" id="myModalLabel">¿Confirma eliminar {{ paciente.apellido }}, {{ paciente.nombre }}?</h4>
+                        </div>
+                        <div class="modal-body">
+                            <a href="{% url 'paciente_eliminar' pk=paciente.pk %}" role="button" class="btn btn-outline btn-danger btn-sm">
+                                <i class="glyphicon glyphicon-remove"></i> SI, ELIMINAR
+                            </a>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+            <!-- /.modal -->
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+<div class="row">
+    <div class="col-lg-6">
+        <div class="panel panel-green">
+            <div class="panel-heading"><b>Estudios / Laboratorios </b> </div>
+                <div class="panel-body">
+                    <form method="POST" role="form">{% csrf_token %}
+                        {{ form_resultado_estudio.as_p }}
+                        <button type="submit" class="btn btn-default" name='nuevo_resultado_estudio'>Crear estudio</button>
+                    </form>
+                    <div class="panel-group" id="accordion">
+                        {% for resultado in paciente.resultado_set.all %}
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion" href="#estudio{{ forloop.counter }}">
+                                            <i class="glyphicon glyphicon-file"></i>
+                                            {{resultado.fecha|date:"SHORT_DATE_FORMAT"}} - {{resultado.estudio}}
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="estudio{{ forloop.counter }}" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <table class="table table-bordered table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th colspan="2"><i class="fa fa-bar-chart-o fa-fw"></i> {{resultado.lugar}}</th>
+                                                </tr>
+                                                <tr>
+                                                    <th>Parámetro</th>
+                                                    <th>Valor</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for valor in resultado.valor_set.all %}
+                                                   <tr>
+                                                       <th>{{valor.parametro.texto}}</th>
+                                                       <td>{{valor.texto}}</td>
+                                                   </tr>
+                                                {% endfor %}
+                                                    <tr>
+                                                        <th colspan="2">
+                                                            <a href="{% url 'nuevo_valor' pk_resultado=resultado.pk pk_estudio=resultado.estudio.pk %}" role="button" class="btn btn-outline btn-primary btn-sm">
+                                                                <i class="glyphicon glyphicon-plus"></i> NUEVO VALOR
+                                                            </a>
+                                                        </th>
+                                                    </tr>
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                </div>
+                            </div>
+                        {% empty %}
+                            <p>No hay estudios :(</p>
+                        {% endfor %}
+                    </div>
+                </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
