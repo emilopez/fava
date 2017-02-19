@@ -156,6 +156,23 @@ def hc_consultas(request, pk, pk_consulta=None):
     return render(request, 'hc/hc_consultas.html', {'paciente': paciente, 'form_consulta':form_consulta})
 
 @login_required
+def hc_consulta_editar(request, pk, pk_consulta):
+    paciente = get_object_or_404(Paciente, pk=pk)
+    paciente.set_edad()
+    consulta = get_object_or_404(Consulta, pk=pk_consulta)
+    if request.POST:
+        form_consulta = ConsultaForm(request.POST, instance=consulta)
+        if form_consulta.is_valid():
+            consulta = form_consulta.save(commit=False)
+            # consulta.paciente = paciente
+            consulta.fecha = consulta.fecha
+            consulta.save()
+        return redirect('hc_consultas', pk=pk)
+    else:
+        form_consulta = ConsultaForm(instance=consulta)
+    return render(request, 'hc/hc_consultas.html', {'paciente': paciente, 'form_consulta':form_consulta})
+
+@login_required
 def hc_antecedentes(request, pk, pk_consulta=None):
     paciente = get_object_or_404(Paciente, pk=pk)
     paciente.set_edad()
@@ -202,19 +219,7 @@ def nuevo_valor(request, pk_resultado, pk_estudio):
         form.fields['parametro'] = forms.ModelChoiceField(Parametro.objects.filter(estudio=pk_estudio), widget=forms.Select(attrs={'class': 'form-control'}))
     return render(request, 'hc/valor_editar.html', {'form':form, 'estudio':estudio, 'resultado':resultado})
 
-@login_required
-def consulta_editar(request, pk):
-    consulta = get_object_or_404(Consulta, pk=pk)
-    if request.POST:
-        form = ConsultaForm(request.POST, instance=consulta)
-        if form.is_valid():
-            consulta = form.save(commit=False)
-            consulta.fecha = consulta.fecha
-            consulta.save()
-            return redirect('hc_editar', pk=consulta.paciente.pk)
-    else:
-        form = ConsultaForm(instance=consulta)
-    return render(request, 'hc/consulta_editar.html', {'form': form, 'consulta':consulta})
+
 
 @login_required
 def consulta_eliminar(request, pk):

@@ -114,7 +114,7 @@
                                 </div>
                                 <div class="panel-body">
                                     <ul class="list-inline">
-                                        <a href="{% url 'consulta_editar' pk=consulta.pk %}" role="button" class="btn btn-outline btn-success btn-sm">
+                                        <a href="{% url 'hc_consulta_editar' pk=consulta.paciente.pk pk_consulta=consulta.pk  %}" role="button" class="btn btn-outline btn-success btn-sm">
                                             <i class="glyphicon glyphicon-edit"></i> EDITAR
                                         </a>
                                         <a href="" role="button" class="btn btn-outline btn-danger btn-sm">
