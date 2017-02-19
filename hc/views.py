@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
-from .models import Paciente, Profesional, Antecedente, TipoAntecedente, Estudio, Parametro, Resultado, Consulta
+from .models import Paciente, Profesional, Antecedente, TipoAntecedente, Estudio, Parametro, Resultado, Consulta, Historico
 from .forms import PacienteForm, ConsultaForm, AntecedenteForm, TipoAntecedenteForm, EstudioForm, ParametroForm, HistoricoForm, ResultadoForm, ValorForm
 from django import forms
 from datetime import date
@@ -40,7 +40,7 @@ def paciente_editar(request, pk):
             paciente = form.save(commit=False)
             paciente.medico = request.user
             paciente.save()
-            return redirect('hc_editar', pk=paciente.pk)
+            return redirect('hc_consultas', pk=paciente.pk)
     else:
         form = PacienteForm(instance=paciente)
     return render(request, 'hc/paciente_editar.html', {'form': form})
@@ -170,10 +170,16 @@ def hc_consulta_editar(request, pk, pk_consulta):
         return redirect('hc_consultas', pk=pk)
     else:
         form_consulta = ConsultaForm(instance=consulta)
-    return render(request, 'hc/hc_consultas.html', {'paciente': paciente, 'form_consulta':form_consulta})
+    return render(request, 'hc/hc_consultas.html', {'paciente': paciente, 'form_consulta':form_consulta, 'consulta':consulta})
 
 @login_required
-def hc_antecedentes(request, pk, pk_consulta=None):
+def hc_consulta_eliminar(request, pk, pk_consulta):
+    consulta = get_object_or_404(Consulta, pk=pk_consulta)
+    consulta.delete()
+    return redirect('hc_consultas', pk=pk)
+
+@login_required
+def hc_antecedentes(request, pk):
     paciente = get_object_or_404(Paciente, pk=pk)
     paciente.set_edad()
     if request.POST:
@@ -186,6 +192,28 @@ def hc_antecedentes(request, pk, pk_consulta=None):
     else:
         form_historico_antecedente = HistoricoForm()
     return render(request, 'hc/hc_antecedentes.html', {'paciente': paciente, 'form_historico_antecedente':form_historico_antecedente})
+
+@login_required
+def hc_antecedente_editar(request, pk, pk_antecedente):
+    paciente = get_object_or_404(Paciente, pk=pk)
+    paciente.set_edad()
+    historico = get_object_or_404(Historico, pk=pk_antecedente)
+    if request.POST:
+        form_historico_antecedente = HistoricoForm(request.POST, instance=historico)
+        if form_historico_antecedente.is_valid():
+            historico_antecedente = form_historico_antecedente.save(commit=False)
+            # historico_antecedente.paciente = paciente
+            historico_antecedente.save()
+        return redirect('hc_antecedentes', pk=pk)
+    else:
+        form_historico_antecedente = HistoricoForm(instance=historico)
+    return render(request, 'hc/hc_antecedentes.html', {'paciente': paciente, 'form_historico_antecedente':form_historico_antecedente, 'historico':historico})
+
+@login_required
+def hc_antecedente_eliminar(request, pk, pk_antecedente):
+    historico = get_object_or_404(Historico, pk=pk_antecedente)
+    historico.delete()
+    return redirect('hc_antecedentes', pk=historico.paciente.pk)
 
 @login_required
 def hc_estudios(request, pk, pk_consulta=None):
@@ -218,9 +246,3 @@ def nuevo_valor(request, pk_resultado, pk_estudio):
         form = ValorForm()
         form.fields['parametro'] = forms.ModelChoiceField(Parametro.objects.filter(estudio=pk_estudio), widget=forms.Select(attrs={'class': 'form-control'}))
     return render(request, 'hc/valor_editar.html', {'form':form, 'estudio':estudio, 'resultado':resultado})
-
-
-
-@login_required
-def consulta_eliminar(request, pk):
-    pass

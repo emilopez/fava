@@ -75,20 +75,50 @@
                 <!-- /.modal-dialog -->
             </div>
             <!-- /.modal -->
+
+
     </div>
     <!-- /.col-lg-12 -->
 </div>
 <div class="row">
     <div class="col-lg-6">
         <div class="panel panel-info">
-            <div class="panel-heading"> <b>Consulta</b></div>
+            <div class="panel-heading"> <b>Consulta {{consulta.fecha|date:"SHORT_DATE_FORMAT"|default:"nueva"}}</b></div>
             <div class="panel-body">
                 <form method="POST" role="form">{% csrf_token %}
                     {{ form_consulta.as_p }}
                     <button type="submit" class="btn btn-default" name='nueva_consulta'>Guardar Consulta</button>
                 </form>
+                {% if consulta.pk %}
+                    <div class="pull-right">
+                        <button class="btn btn-outline btn-danger btn-sm" data-toggle="modal" data-target="#eliminarconsulta">
+                            <i class="glyphicon glyphicon-remove"></i> Eliminar
+                        </button>
+
+                    </div>
+
+                    <div class="modal fade" id="eliminarconsulta" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                    <h4 class="modal-title" id="myModalLabel">¿Confirma eliminar consulta del {{consulta.fecha|date:"SHORT_DATE_FORMAT"}} de {{paciente.apellido}}, {{paciente.nombre}}?</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <a href="{% url 'hc_consulta_eliminar' pk=paciente.pk pk_consulta=consulta.pk %}" role="button" class="btn btn-outline btn-danger btn-sm">
+                                        <i class="glyphicon glyphicon-remove"></i> SI, ELIMINAR
+                                    </a>
+                                </div>
+                            </div>
+                            <!-- /.modal-content -->
+                        </div>
+                        <!-- /.modal-dialog -->
+                    </div>
+
+                {% endif %}
             </div>
         </div>
+
     </div>
 </div>
 <div class="row">
@@ -116,9 +146,6 @@
                                     <ul class="list-inline">
                                         <a href="{% url 'hc_consulta_editar' pk=consulta.paciente.pk pk_consulta=consulta.pk  %}" role="button" class="btn btn-outline btn-success btn-sm">
                                             <i class="glyphicon glyphicon-edit"></i> EDITAR
-                                        </a>
-                                        <a href="" role="button" class="btn btn-outline btn-danger btn-sm">
-                                            <i class="glyphicon glyphicon-remove"></i> ELIMINAR
                                         </a>
                                         {% for adjunto in consulta.adjuntos.all %}
                                             <li><a href="{{ adjunto.archivo.url }}"><i class="glyphicon glyphicon-file"></i> {{adjunto.filename}}</a></li>
