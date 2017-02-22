@@ -231,45 +231,48 @@ def hc_estudios(request, pk, pk_consulta=None):
         form_resultado_estudio = ResultadoForm()
     return render(request, 'hc/hc_estudios.html', {'paciente': paciente, 'form_resultado_estudio':form_resultado_estudio})
 
-@login_required
-def nuevo_valor(request, pk_resultado, pk_estudio):
-    estudio = get_object_or_404(Estudio, pk=pk_estudio)
-    resultado = get_object_or_404(Resultado, pk=pk_resultado)
-    if request.POST:
-        form = ValorForm(request.POST)
-        if form.is_valid():
-            valor = form.save(commit=False)
-            valor.resultado = resultado
-            valor.save()
-        # return redirect('hc_editar', pk=resultado.paciente.pk)
-        return redirect('nuevo_valor', pk_resultado, pk_estudio)
-    else:
-        form = ValorForm()
-        form.fields['parametro'] = forms.ModelChoiceField(Parametro.objects.filter(estudio=pk_estudio), widget=forms.Select(attrs={'class': 'form-control'}))
-    return render(request, 'hc/valor_editar.html', {'form':form, 'estudio':estudio, 'resultado':resultado})
-
 # @login_required
 # def nuevo_valor(request, pk_resultado, pk_estudio):
 #     estudio = get_object_or_404(Estudio, pk=pk_estudio)
 #     resultado = get_object_or_404(Resultado, pk=pk_resultado)
-#     parametros = Parametro.objects.filter(estudio=pk_estudio)
-#     ValorFormSet = formset_factory(ValorForm, extra=len(parametros))
 #     if request.POST:
-#         formset = ValorFormSet(request.POST)
-#         print(formset.cleaned_data)
-#         if formset.is_valid():
-#             msg = "todo ok"
-#             for form in formset:
-#                 valor = form.save(commit=False)
-#                 valor.resultado = resultado
-#                 valor.save()
-#         else:
-#             msg = "error"
-#
-#
+#         form = ValorForm(request.POST)
+#         if form.is_valid():
+#             valor = form.save(commit=False)
+#             valor.resultado = resultado
+#             valor.save()
+#         # return redirect('hc_editar', pk=resultado.paciente.pk)
+#         return redirect('nuevo_valor', pk_resultado, pk_estudio)
 #     else:
-#         msg = "en blanco"
-#         formset = ValorFormSet()
-#         for f in formset:
-#             f.fields['parametro'] = forms.ModelChoiceField(parametros, widget=forms.Select(attrs={'class': 'form-control'}))
-#     return render(request, 'hc/valor_editar.html', {'formset':formset, 'estudio':estudio, 'resultado':resultado, 'msg':msg})
+#         form = ValorForm()
+#         form.fields['parametro'] = forms.ModelChoiceField(Parametro.objects.filter(estudio=pk_estudio), widget=forms.Select(attrs={'class': 'form-control'}))
+#     return render(request, 'hc/valor_editar.html', {'form':form, 'estudio':estudio, 'resultado':resultado})
+
+@login_required
+def nuevo_valor(request, pk_resultado, pk_estudio):
+    estudio = get_object_or_404(Estudio, pk=pk_estudio)
+    resultado = get_object_or_404(Resultado, pk=pk_resultado)
+    parametros = Parametro.objects.filter(estudio=pk_estudio)
+    ValorFormSet = formset_factory(ValorForm, extra=len(parametros))
+    if request.POST:
+        formset = ValorFormSet(request.POST)
+        print(formset.cleaned_data)
+        if formset.is_valid():
+            msg = "todo ok"
+            for form in formset:
+                valor = form.save(commit=False)
+                valor.resultado = resultado
+                valor.save()
+        else:
+            msg = "error"
+    else:
+        msg = "en blanco"
+        formset = ValorFormSet()
+        i = 0
+        for f in formset:
+            f.fields['parametro'] = forms.ModelChoiceField(parametros, widget=forms.Select(attrs={'class': 'form-control'}))
+            f.fields['parametro'].initial = parametros[i]
+            i += 1
+            # f.fields['parametro'].choices = [(i.id, str(i).upper()) for i in parametros]
+
+    return render(request, 'hc/valor_editar.html', {'formset':formset, 'estudio':estudio, 'resultado':resultado, 'msg':msg})
