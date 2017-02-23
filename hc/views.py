@@ -256,23 +256,20 @@ def nuevo_valor(request, pk_resultado, pk_estudio):
     ValorFormSet = formset_factory(ValorForm, extra=len(parametros))
     if request.POST:
         formset = ValorFormSet(request.POST)
-        print(formset.cleaned_data)
         if formset.is_valid():
-            msg = "todo ok"
             for form in formset:
                 valor = form.save(commit=False)
                 valor.resultado = resultado
                 valor.save()
-        else:
-            msg = "error"
+        return redirect('nuevo_valor', pk_resultado=pk_resultado, pk_estudio=pk_estudio)
     else:
-        msg = "en blanco"
         formset = ValorFormSet()
         i = 0
         for f in formset:
             f.fields['parametro'] = forms.ModelChoiceField(parametros, widget=forms.Select(attrs={'class': 'form-control'}))
             f.fields['parametro'].initial = parametros[i]
+            f.fields['texto'].label = str(parametros[i])
             i += 1
             # f.fields['parametro'].choices = [(i.id, str(i).upper()) for i in parametros]
 
-    return render(request, 'hc/valor_editar.html', {'formset':formset, 'estudio':estudio, 'resultado':resultado, 'msg':msg})
+    return render(request, 'hc/valor_editar.html', {'formset':formset, 'estudio':estudio, 'resultado':resultado})
