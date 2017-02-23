@@ -3,7 +3,7 @@
 
 <div class="row">
     <div class="col-lg-12">
-        <h1 class="page-header">Valor de estudio/laboratorio
+        <h1 class="page-header">{{ estudio.texto }}
         <a href="{% url 'hc_estudios' pk=resultado.paciente.pk%}" role="button" class="btn btn-outline btn-primary btn-sm">
             <i class="glyphicon glyphicon-arrow-left"></i> Historia Clínica
         </a>
@@ -15,7 +15,7 @@
 <div class="row">
     <div class="col-lg-6">
         <div class="panel panel-info">
-            <div class="panel-heading"><b>{{ estudio.texto }} | {{ resultado.fecha|date:"SHORT_DATE_FORMAT" }} | {{ resultado.paciente }}</b></div>
+            <div class="panel-heading"><b> {{ resultado.fecha|date:"SHORT_DATE_FORMAT" }} | {{ resultado.paciente }}</b></div>
             <div class="panel-body">
                 <div class="col-lg-12">
                         <form method="POST" role="form">{% csrf_token %}
@@ -33,7 +33,7 @@
                             </table>
                             <button type="submit" class="btn btn-default">Guardar</button>
                         </form>
-                    <table class="table table-bordered table-striped">
+                    <table class="table table-striped">
                         <thead>
                             <tr>
                                 <th colspan="2"><i class="fa fa-bar-chart-o fa-fw"></i> {{resultado.lugar}}</th>
