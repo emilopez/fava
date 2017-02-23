@@ -258,9 +258,10 @@ def nuevo_valor(request, pk_resultado, pk_estudio):
         formset = ValorFormSet(request.POST)
         if formset.is_valid():
             for form in formset:
-                valor = form.save(commit=False)
-                valor.resultado = resultado
-                valor.save()
+                if form.cleaned_data['texto']:
+                    valor = form.save(commit=False)
+                    valor.resultado = resultado
+                    valor.save()
         return redirect('nuevo_valor', pk_resultado=pk_resultado, pk_estudio=pk_estudio)
     else:
         formset = ValorFormSet()
