@@ -110,37 +110,7 @@ def parametro_eliminar(request, pk):
     parametro = get_object_or_404(Parametro, pk=pk)
     parametro.delete()
     return redirect('estudio_nuevo')
-
-@login_required
-def hc_editar(request, pk, pk_consulta=None):
-    paciente = get_object_or_404(Paciente, pk=pk)
-    paciente.set_edad()
-    if request.POST:
-        if 'nueva_consulta' in request.POST:
-            form_consulta = ConsultaForm(request.POST)
-            if form_consulta.is_valid():
-                consulta = form_consulta.save(commit=False)
-                consulta.paciente = paciente
-                consulta.save()
-        elif 'nuevo_antecedente' in request.POST:
-            form_historico_antecedente = HistoricoForm(request.POST)
-            if form_historico_antecedente.is_valid():
-                historico_antecedente = form_historico_antecedente.save(commit=False)
-                historico_antecedente.paciente = paciente
-                historico_antecedente.save()
-        elif 'nuevo_resultado_estudio' in request.POST:
-            form_resultado_estudio = ResultadoForm(request.POST)
-            if form_resultado_estudio.is_valid():
-                resultado_estudio = form_resultado_estudio.save(commit=False)
-                resultado_estudio.paciente = paciente
-                resultado_estudio.save()
-        return redirect('hc_editar', pk=pk)
-    else:
-        form_consulta = ConsultaForm()
-        form_historico_antecedente = HistoricoForm()
-        form_resultado_estudio = ResultadoForm()
-    return render(request, 'hc/hc_editar.html', {'paciente': paciente, 'form_consulta':form_consulta, 'form_historico_antecedente':form_historico_antecedente, 'form_resultado_estudio':form_resultado_estudio})
-
+    
 @login_required
 def hc_consultas(request, pk, pk_consulta=None):
     paciente = get_object_or_404(Paciente, pk=pk)
@@ -230,23 +200,6 @@ def hc_estudios(request, pk, pk_consulta=None):
     else:
         form_resultado_estudio = ResultadoForm()
     return render(request, 'hc/hc_estudios.html', {'paciente': paciente, 'form_resultado_estudio':form_resultado_estudio})
-
-# @login_required
-# def nuevo_valor(request, pk_resultado, pk_estudio):
-#     estudio = get_object_or_404(Estudio, pk=pk_estudio)
-#     resultado = get_object_or_404(Resultado, pk=pk_resultado)
-#     if request.POST:
-#         form = ValorForm(request.POST)
-#         if form.is_valid():
-#             valor = form.save(commit=False)
-#             valor.resultado = resultado
-#             valor.save()
-#         # return redirect('hc_editar', pk=resultado.paciente.pk)
-#         return redirect('nuevo_valor', pk_resultado, pk_estudio)
-#     else:
-#         form = ValorForm()
-#         form.fields['parametro'] = forms.ModelChoiceField(Parametro.objects.filter(estudio=pk_estudio), widget=forms.Select(attrs={'class': 'form-control'}))
-#     return render(request, 'hc/valor_editar.html', {'form':form, 'estudio':estudio, 'resultado':resultado})
 
 @login_required
 def valor_nuevo(request, pk_resultado):
