@@ -110,7 +110,7 @@ def parametro_eliminar(request, pk):
     parametro = get_object_or_404(Parametro, pk=pk)
     parametro.delete()
     return redirect('estudio_nuevo')
-    
+
 @login_required
 def hc_consultas(request, pk, pk_consulta=None):
     paciente = get_object_or_404(Paciente, pk=pk)
