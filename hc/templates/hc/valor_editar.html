@@ -37,6 +37,7 @@
                         <thead>
                             <tr>
                                 <th colspan="2"><i class="fa fa-bar-chart-o fa-fw"></i> {{resultado.lugar}}</th>
+                                <td><a href="{% url 'resultado_eliminar' pk=resultado.pk %}"><i class="glyphicon glyphicon-remove"></i></a></td>
                             </tr>
                         </thead>
                         <tbody>
@@ -44,6 +45,7 @@
                                <tr>
                                    <th>{{valor.parametro.texto}}</th>
                                    <td>{{valor.texto}}</td>
+                                   <td><a href="{% url 'valor_eliminar' pk=valor.pk %}"><i class="glyphicon glyphicon-remove"></i></a></td>
                                </tr>
                             {% endfor %}
                         </tbody>

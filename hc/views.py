@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
-from .models import Paciente, Profesional, Antecedente, TipoAntecedente, Estudio, Parametro, Resultado, Consulta, Historico
+from .models import Paciente, Profesional, Antecedente, TipoAntecedente, Estudio, Parametro, Resultado, Consulta, Historico, Valor
 from .forms import PacienteForm, ConsultaForm, AntecedenteForm, TipoAntecedenteForm, EstudioForm, ParametroForm, HistoricoForm, ResultadoForm, ValorForm
 from django.forms.formsets import formset_factory
 from django import forms
@@ -249,9 +249,10 @@ def hc_estudios(request, pk, pk_consulta=None):
 #     return render(request, 'hc/valor_editar.html', {'form':form, 'estudio':estudio, 'resultado':resultado})
 
 @login_required
-def nuevo_valor(request, pk_resultado, pk_estudio):
-    estudio = get_object_or_404(Estudio, pk=pk_estudio)
+def valor_nuevo(request, pk_resultado):
     resultado = get_object_or_404(Resultado, pk=pk_resultado)
+    pk_estudio = resultado.estudio.pk
+    estudio = get_object_or_404(Estudio, pk=pk_estudio)
     parametros = Parametro.objects.filter(estudio=pk_estudio)
     ValorFormSet = formset_factory(ValorForm, extra=len(parametros))
     if request.POST:
@@ -262,7 +263,7 @@ def nuevo_valor(request, pk_resultado, pk_estudio):
                     valor = form.save(commit=False)
                     valor.resultado = resultado
                     valor.save()
-        return redirect('nuevo_valor', pk_resultado=pk_resultado, pk_estudio=pk_estudio)
+        return redirect('valor_nuevo', pk_resultado=pk_resultado)
     else:
         formset = ValorFormSet()
         i = 0
@@ -272,5 +273,14 @@ def nuevo_valor(request, pk_resultado, pk_estudio):
             f.fields['texto'].label = str(parametros[i])
             i += 1
             # f.fields['parametro'].choices = [(i.id, str(i).upper()) for i in parametros]
+        return render(request, 'hc/valor_editar.html', {'formset':formset, 'estudio':estudio, 'resultado':resultado})
 
-    return render(request, 'hc/valor_editar.html', {'formset':formset, 'estudio':estudio, 'resultado':resultado})
+def valor_eliminar(request, pk):
+    valor = get_object_or_404(Valor, pk=pk)
+    valor.delete()
+    return redirect('valor_nuevo', pk_resultado=valor.resultado.pk)
+
+def resultado_eliminar(request, pk):
+    resultado = get_object_or_404(Resultado, pk=pk)
+    resultado.delete()
+    return redirect('hc_estudios', pk=resultado.paciente.pk)
