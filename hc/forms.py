@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from django.forms.extras.widgets import SelectDateWidget
 from datetime import date
+from tinymce.widgets import TinyMCE
 
 class PacienteForm(forms.ModelForm):
     class Meta:
@@ -36,16 +37,14 @@ class ProfesionalForm(forms.ModelForm):
         fields = ('username', 'password', 'email', 'last_name', 'first_name',  )
 
 class ConsultaForm(forms.ModelForm):
+    motivo = forms.CharField(widget=TinyMCE(attrs={'class': 'form-control', 'rows':'9'}))
+    entrada = forms.CharField(widget=TinyMCE(attrs={'class': 'form-control', 'rows':'9'}))
     class Meta:
         model = Consulta
         fields = ('motivo','entrada', )
         labels = {
             'motivo': _('Motivo'), # para cambiar la etiqueta
             'entrada': _('Actual'), # para cambiar la etiqueta
-        }
-        widgets = {
-            'motivo': forms.Textarea(attrs={'class': 'form-control', 'rows':'2'}),
-            'entrada': forms.Textarea(attrs={'class': 'form-control', 'rows':'9'}),
         }
 
 class AntecedenteForm(forms.ModelForm):
