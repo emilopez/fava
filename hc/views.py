@@ -131,7 +131,7 @@ def hc_consulta_editar(request, pk, pk_consulta):
     paciente = get_object_or_404(Paciente, pk=pk)
     paciente.set_edad()
     consulta = get_object_or_404(Consulta, pk=pk_consulta)
-    if request.method == "POST":
+    if request.POST:
         form_consulta = ConsultaForm(request.POST, instance=consulta)
         if form_consulta.is_valid():
             consulta = form_consulta.save(commit=False)
