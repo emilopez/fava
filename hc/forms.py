@@ -37,8 +37,8 @@ class ProfesionalForm(forms.ModelForm):
         fields = ('username', 'password', 'email', 'last_name', 'first_name',  )
 
 class ConsultaForm(forms.ModelForm):
-    motivo = forms.CharField(widget=TinyMCE(attrs={'class': 'form-control', 'rows':'9'}))
-    entrada = forms.CharField(widget=TinyMCE(attrs={'class': 'form-control', 'rows':'9'}))
+    motivo = forms.CharField(required=False, widget=TinyMCE(attrs={'class': 'form-control', 'rows':'9'}))
+    entrada = forms.CharField(required=False, widget=TinyMCE(attrs={'class': 'form-control', 'rows':'9'}))
     class Meta:
         model = Consulta
         fields = ('motivo','entrada', )

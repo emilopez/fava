@@ -121,7 +121,7 @@ def hc_consultas(request, pk, pk_consulta=None):
             consulta = form_consulta.save(commit=False)
             consulta.paciente = paciente
             consulta.save()
-        return redirect('hc_consultas', pk=pk)
+            return redirect('hc_consultas', pk=pk)
     else:
         form_consulta = ConsultaForm()
     return render(request, 'hc/hc_consultas.html', {'paciente': paciente, 'form_consulta':form_consulta})
@@ -131,15 +131,14 @@ def hc_consulta_editar(request, pk, pk_consulta):
     paciente = get_object_or_404(Paciente, pk=pk)
     paciente.set_edad()
     consulta = get_object_or_404(Consulta, pk=pk_consulta)
-    if request.POST:
+    if request.method == "POST":
         form_consulta = ConsultaForm(request.POST, instance=consulta)
         if form_consulta.is_valid():
             consulta = form_consulta.save(commit=False)
-            # consulta.paciente = paciente
-            consulta.fecha = consulta.fecha
             consulta.save()
-        return redirect('hc_consultas', pk=pk)
+            return redirect('hc_consultas', pk=pk)
     else:
+        print("NO fue un post")
         form_consulta = ConsultaForm(instance=consulta)
     return render(request, 'hc/hc_consultas.html', {'paciente': paciente, 'form_consulta':form_consulta, 'consulta':consulta})
 

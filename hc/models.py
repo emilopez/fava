@@ -3,7 +3,8 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 import os
 from datetime import date
-from tinymce.models import HTMLField
+from tinymce import models as tinymce_models
+
 
 class Profesional(models.Model):
     user = models.OneToOneField(User, related_name='profesional')
@@ -46,10 +47,8 @@ class Paciente(models.Model):
 class Consulta(models.Model):
     paciente = models.ForeignKey('hc.Paciente', related_name='consultas',null=True, blank=True)
     fecha = models.DateTimeField(auto_now_add=True)   # Almacena la fecha actual
-    # entrada = models.TextField(null=True, blank=True)
-    # motivo = models.TextField(null=True, blank=True)
-    entrada = HTMLField(null=True, blank=True)
-    motivo = HTMLField(null=True, blank=True)
+    entrada = tinymce_models.HTMLField(blank=True, null=True)
+    motivo = tinymce_models.HTMLField(blank=True, null=True)
 
     class Meta:
         ordering = ["-fecha"]
