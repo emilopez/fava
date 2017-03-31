@@ -77,11 +77,11 @@ class Antecedente(models.Model):
         ordering = ["tipo"]
 
     def __str__(self):
-        return "{}-{}".format(self.tipo, self.texto)
+        return "{}".format(self.texto)
 
 class Historico(models.Model):
     """ tabla intermedia totalmente dependiente de paciente-antecedente"""
-    paciente = models.ForeignKey('hc.Paciente')
+    paciente = models.ForeignKey('hc.Paciente', related_name='historicos')
     antecedente = models.ForeignKey('hc.Antecedente')
     texto = models.TextField(blank=True, null=True)
     fecha = models.DateTimeField(auto_now=True)

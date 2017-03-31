@@ -13,6 +13,7 @@ urlpatterns = [
     url(r'^paciente/(?P<pk>\d+)/consultas$', views.hc_consultas, name='hc_consultas'),
     url(r'^paciente/(?P<pk>\d+)/consulta/(?P<pk_consulta>\d+)$', views.hc_consulta_editar, name='hc_consulta_editar'),
     url(r'^paciente/(?P<pk>\d+)/consulta/(?P<pk_consulta>\d+)/eliminar$', views.hc_consulta_eliminar, name='hc_consulta_eliminar'),
+    #url(r'^paciente/(?P<pk>\d+)/antecedentes$', views.hc_antecedentes, name='hc_antecedentes'),
     url(r'^paciente/(?P<pk>\d+)/antecedentes$', views.hc_antecedentes, name='hc_antecedentes'),
     url(r'^paciente/(?P<pk>\d+)/antecedente/(?P<pk_antecedente>\d+)$', views.hc_antecedente_editar, name='hc_antecedente_editar'),
     url(r'^paciente/(?P<pk>\d+)/antecedente/(?P<pk_antecedente>\d+)/eliminar/$', views.hc_antecedente_eliminar, name='hc_antecedente_eliminar'),

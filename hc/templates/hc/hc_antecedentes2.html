@@ -1,0 +1,142 @@
+{% extends 'hc/base.html' %}
+{% block content %}
+
+<div class="row">
+    <div class="col-lg-12">
+
+           <!-- Nav tabs -->
+           <ul class="nav nav-tabs">
+               <li ><a href="{% url 'hc_consultas' pk=paciente.pk %}" >Consultas</a></li>
+               <li class="active"><a href="#" >Antecedentes</a></li>
+               <li><a href="{% url 'hc_estudios' pk=paciente.pk %}" >Estudios/Laboratorios</a></li>
+           </ul>
+
+        <h1 class="page-header">
+            <i class="fa fa-fw fa-user"></i> {{ paciente.apellido }}, {{ paciente.nombre }}
+            <button class="btn btn-default btn-sm" data-toggle="modal" data-target="#filiacion">
+                Datos de filiación
+            </button>
+            <a class="btn btn-default" href="{% url 'paciente_editar' pk=paciente.pk %}"><i class="glyphicon glyphicon-pencil"></i></a>
+            <button class="btn btn-danger" data-toggle="modal" data-target="#eliminar">
+                <i class="glyphicon glyphicon-remove"></i>
+            </button>
+        </h1>
+        <!-- Button trigger modal -->
+
+            <!-- Modal -->
+            <div class="modal fade" id="filiacion" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            <h4 class="modal-title" id="myModalLabel">Datos de filiación</h4>
+                        </div>
+                        <div class="modal-body">
+                                <table class="table table-striped">
+                                    <tbody>
+                                        <tr><td>Apellido y nombre</td><td>{{ paciente.apellido }}, {{ paciente.nombre }}</td></tr>
+                                        <tr><td>Obra social</td><td>{{ paciente.codigo_obra_social|default:"" }} - {{ paciente.obra_social|default:"" }}</td></tr>
+                                        <tr><td>Documento</td><td>{{ paciente.documento }}</td></tr>
+                                        <tr><td>Fecha de nacimiento</td><td>{{ paciente.fecha_nacimiento|date:"d/m/Y"|default:"-"}}</td></tr>
+                                        <tr><td>Edad</td><td>{{ paciente.edad|default:"-"}}</td></tr>
+                                        <tr><td>Lugar de nacimiento</td><td>{{ paciente.lugar_nacimiento|default:"-"}}</td></tr>
+                                        <tr><td>Estado civil</td><td>{{ paciente.estado_civil|default:"-" }}</td></tr>
+                                        <tr><td>Género</td><td>{{ paciente.sexo|default:"-" }}</td></tr>
+                                        <tr><td>Ocupación</td><td>{{ paciente.ocupacion|default:"-" }}</td></tr>
+                                        <tr><td>Domicilio</td><td>{{ paciente.domicilio|default:"-" }}</td></tr>
+                                        <tr><td>Teléfono</td><td> {{ paciente.telefono|default:"-" }}</td></tr>
+                                        <tr><td>E-mail</td><td>{{ paciente.email|default:"-" }}</td></tr>
+                                    </tbody>
+                                </table>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+            <!-- /.modal -->
+
+            <!-- Modal -->
+            <div class="modal fade" id="eliminar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            <h4 class="modal-title" id="myModalLabel">¿Confirma eliminar {{ paciente.apellido }}, {{ paciente.nombre }}?</h4>
+                        </div>
+                        <div class="modal-body">
+                            <a href="{% url 'paciente_eliminar' pk=paciente.pk %}" role="button" class="btn btn-outline btn-danger btn-sm">
+                                <i class="glyphicon glyphicon-remove"></i> SI, ELIMINAR
+                            </a>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+            <!-- /.modal -->
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<div class="row">
+    <div class="col-lg-6">
+        <div class="panel panel-yellow">
+            <div class="panel-heading"><b>Antecedentes</b> </div>
+                <div class="panel-body">
+                    <div id="dataTables-antecedentes2" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table class="table table-striped table-bordered table-hover dataTable no-footer dtr-inline" id="dataTables-antecedentes" role="grid" aria-describedby="dataTables-example_info" style="width: 100%;" width="100%">
+                                    <thead>
+                                        <tr role="row">
+                                            <th style="width: 300px;">Antecedentes</th>
+                                            <th style="width: 300px;">Comentarios</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for historico in paciente.historicos.all %}
+                                            {% ifchanged historico.antecedente.tipo %}
+                                                <tr>
+                                                    <th>{{historico.antecedente.tipo}}</th>
+                                                    <th>&nbsp;</th>
+                                                </tr>
+                                            {% endifchanged %}
+                                            <tr>
+                                                <td>{{historico.antecedente.texto}}</td>
+                                                <td>{{historico.texto}}</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <form method="POST" role="form" id="form">{% csrf_token %}
+                        {{ formset.management_form }}
+                        <table class="table table-striped table-bordered table-hover dataTable no-footer dtr-inline" id="dataTables-antecedentes-nuevos" role="grid" aria-describedby="dataTables-example_info" style="width: 100%;" width="100%">
+                            <thead>
+                                <tr role="row">
+                                    <th style="width: 300px;">Antecedentes</th>
+                                    <th style="width: 300px;">Comentarios</th>
+                                    <th style="width: 300px;">Comentarios</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for form in formset %}
+                                    <tr>
+                                        {{ form.antecedente.as_hidden }}
+                                        <td style="width: 300px;">{{ form.texto.label_tag }}</td>
+                                        <th style="width: 300px;">{{ form.tipo.label_tag }}</th>
+                                        <td>{{ form.texto }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        <button type="submit" class="btn btn-default">Guardar</button>
+                    </form>
+                </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

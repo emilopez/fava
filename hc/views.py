@@ -148,20 +148,20 @@ def hc_consulta_eliminar(request, pk, pk_consulta):
     consulta.delete()
     return redirect('hc_consultas', pk=pk)
 
-@login_required
-def hc_antecedentes(request, pk):
-    paciente = get_object_or_404(Paciente, pk=pk)
-    paciente.set_edad()
-    if request.POST:
-        form_historico_antecedente = HistoricoForm(request.POST)
-        if form_historico_antecedente.is_valid():
-            historico_antecedente = form_historico_antecedente.save(commit=False)
-            historico_antecedente.paciente = paciente
-            historico_antecedente.save()
-        return redirect('hc_antecedentes', pk=pk)
-    else:
-        form_historico_antecedente = HistoricoForm()
-    return render(request, 'hc/hc_antecedentes.html', {'paciente': paciente, 'form_historico_antecedente':form_historico_antecedente})
+# @login_required
+# def hc_antecedentes(request, pk):
+#     paciente = get_object_or_404(Paciente, pk=pk)
+#     paciente.set_edad()
+#     if request.POST:
+#         form_historico_antecedente = HistoricoForm(request.POST)
+#         if form_historico_antecedente.is_valid():
+#             historico_antecedente = form_historico_antecedente.save(commit=False)
+#             historico_antecedente.paciente = paciente
+#             historico_antecedente.save()
+#         return redirect('hc_antecedentes', pk=pk)
+#     else:
+#         form_historico_antecedente = HistoricoForm()
+#     return render(request, 'hc/hc_antecedentes.html', {'paciente': paciente, 'form_historico_antecedente':form_historico_antecedente})
 
 @login_required
 def hc_antecedente_editar(request, pk, pk_antecedente):
@@ -184,6 +184,35 @@ def hc_antecedente_eliminar(request, pk, pk_antecedente):
     historico = get_object_or_404(Historico, pk=pk_antecedente)
     historico.delete()
     return redirect('hc_antecedentes', pk=historico.paciente.pk)
+
+@login_required
+def hc_antecedentes(request, pk):
+    paciente = get_object_or_404(Paciente, pk=pk)
+    paciente.set_edad()
+    antecedentes = Antecedente.objects.all()
+    HistoricoFormSet = formset_factory(HistoricoForm, extra=len(antecedentes))
+    if request.POST:
+        formset = HistoricoFormSet(request.POST)
+        if formset.is_valid():
+            for form in formset:
+                if form.cleaned_data.get('texto', False):
+                    historico = form.save(commit=False)
+                    historico.paciente = paciente
+                    historico.save()
+        return redirect('hc_antecedentes', pk=pk)
+    else:
+
+        formset = HistoricoFormSet()
+        i = 0
+        for f in formset:
+            f.fields['antecedente'] = forms.ModelChoiceField(antecedentes, widget=forms.Select(attrs={'class': 'form-control'}))
+            f.fields['antecedente'].initial = antecedentes[i]
+            f.fields['texto'].label = str(antecedentes[i]).capitalize()
+            f.fields['texto'].label_suffix = ""
+            f.fields['tipo'] = forms.CharField(label=str(antecedentes[i].tipo).capitalize(), label_suffix="")
+
+            i += 1
+        return render(request, 'hc/hc_antecedentes2.html', {'paciente': paciente, 'formset':formset})
 
 @login_required
 def hc_estudios(request, pk, pk_consulta=None):

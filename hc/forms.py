@@ -90,8 +90,7 @@ class HistoricoForm(forms.ModelForm):
         fields = ('antecedente','texto',)
         labels = {'antecedente':'Tipo', 'texto': _('Descripción'),}
         widgets = {
-            'antecedente': forms.Select(attrs={'class': 'form-control'}),
-            'texto': forms.Textarea(attrs={'class': 'form-control', 'rows':'1'}),
+            'texto': forms.TextInput(attrs={'class': 'form-control'}),
         }
 
 class ResultadoForm(forms.ModelForm):

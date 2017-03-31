@@ -106,8 +106,37 @@
                     },
            }
        });
+       $('#dataTables-antecedentes').DataTable({
+           responsive: true,
+           "ordering": false,
+           paging: false,
+           language: {
+               search: "Buscar",
+               info: "",
+           }
+       });
+       $('#dataTables-antecedentes-nuevos').DataTable({
+           responsive: true,
+           "ordering": false,
+           paging: false,
+           language: {
+               search: "Buscar",
+               info: "",
+           }
+       });
    });
    </script>
+<script type="text/javascript">
+var oTable;
+$(document).ready(function() {
+    $('#form').submit( function() {
+        var sData = oTable.$('input').serialize();
+        // alert( "The following data would have been submitted to the server: \n\n"+sData );
+        return true;
+    } );
 
+    oTable = $('#dataTables-antecedentes-nuevos').dataTable();
+} );
+  </script>
 </body>
 </html>
