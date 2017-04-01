@@ -116,7 +116,7 @@
                             <div class="panel-heading">
                                 <h4 class="panel-title">
                                     <a data-toggle="collapse" data-parent="#accordion" href="#antecedentenuevo">
-                                        <i class="glyphicon glyphicon-plus"></i> Nuevo Antecedente
+                                        <i class="glyphicon glyphicon-plus"></i> <b>Cargar Nuevo Antecedente</b>
                                     </a>
                                 </h4>
                             </div>
@@ -127,7 +127,7 @@
                                         <table class="table table-striped table-bordered table-hover dataTable no-footer dtr-inline" id="dataTables-antecedentes-nuevos" role="grid" aria-describedby="dataTables-example_info" style="width: 100%;" width="100%">
                                             <thead>
                                                 <tr role="row">
-                                                    <th style="width: 300px;">Tipo de antecedente</th>
+                                                    <th style="width: 300px;">Tipo</th>
                                                     <th style="width: 300px;">Clasificación</th>
                                                     <th style="width: 300px;">Comentarios</th>
                                                 </tr>
@@ -136,8 +136,8 @@
                                                 {% for form in formset %}
                                                     <tr>
                                                         {{ form.antecedente.as_hidden }}
-                                                        <td style="width: 300px;">{{ form.texto.label_tag }}</td>
-                                                        <th style="width: 300px;">{{ form.tipo.label_tag }}</th>
+                                                        <td>{{ form.texto.label }}</td>
+                                                        <td>{{ form.tipo.label }}</td>
                                                         <td>{{ form.texto }}</td>
                                                     </tr>
                                                 {% endfor %}
