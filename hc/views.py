@@ -195,18 +195,17 @@ def hc_antecedentes(request, pk):
         formset = HistoricoFormSet(request.POST)
         if formset.is_valid():
             for form in formset:
-                if form.cleaned_data.get('texto', False):
+                if form.cleaned_data.get('antecedente', False):
                     historico = form.save(commit=False)
                     historico.paciente = paciente
                     historico.save()
         return redirect('hc_antecedentes', pk=pk)
     else:
-
         formset = HistoricoFormSet()
         i = 0
         for f in formset:
-            f.fields['antecedente'] = forms.ModelChoiceField(antecedentes, widget=forms.Select(attrs={'class': 'form-control'}))
-            f.fields['antecedente'].initial = antecedentes[i]
+            f.fields['antecedente'] = forms.ModelChoiceField(antecedentes, widget=forms.CheckboxInput(attrs={'class': 'form-control'}))
+            f.fields['antecedente'].initial = False
             f.fields['texto'].label = str(antecedentes[i]).capitalize()
             f.fields['texto'].label_suffix = ""
             f.fields['tipo'] = forms.CharField(label=str(antecedentes[i].tipo).capitalize(), label_suffix="")
